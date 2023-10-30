@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+  "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+  "dtd/suppressions_1_2.dtd">
+<!-- Empty suppressions file: copy it into gradle/config/checkstyle and specify required suppressions
+     (https://checkstyle.sourceforge.io/config_filters.html#SuppressionFilter)-->
+<suppressions>
+  <!-- global -->
+<!--  <suppress files="YN.java"-->
+<!--    checks="AbbreviationAsWordInName"-->
+<!--  />-->
+<!--  <suppress files="ResponseOK.java"-->
+<!--    checks="AbbreviationAsWordInName"-->
+<!--  />-->
+
+<!--  <suppress files=".*src/test/.*\.java"-->
+<!--    checks="JavadocContentLocation|MissingDeprecated"/>-->
+<!--  <suppress files=".+\.(?:jar|zip|war|class|tar|bin|java)$" checks=".*"/>-->
+  <!--<suppress message="Missing a Javadoc comment."/>-->
+
+<!--  <suppress checks="JavadocContentLocation"-->
+<!--    files="DateHelper.java"-->
+<!--    lines="82,108-122"/>-->
+
+<!--  <suppress checks="MagicNumberCheck"-->
+<!--    files="JavadocStyleCheck.java"-->
+<!--    lines="221"/>-->
+<!--  <suppress message="Missing a Javadoc comment"/>-->
+
+    <!-- Ignore Q classes -->
+    <suppress files="[\\/]querydsl[\\/]" checks="[a-zA-Z0-9]*"/>
+</suppressions>

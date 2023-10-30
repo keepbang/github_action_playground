@@ -1,0 +1,45 @@
+apply plugin: "com.ewerk.gradle.plugins.querydsl"
+dependencies {
+    // ============================== s queryDSL ==============================
+    // https://mvnrepository.com/artifact/com.querydsl/querydsl-jpa
+    implementation 'com.querydsl:querydsl-jpa:5.0.0'
+
+    // https://mvnrepository.com/artifact/com.querydsl/querydsl-apt
+    implementation 'com.querydsl:querydsl-apt:5.0.0'
+    // ============================== e queryDSL ==============================
+}
+
+//querydsl 추가 시작
+def querydslDir = 'src/querydsl/generated'
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+// build 시 사용할 sourceSet 추가
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java', querydslDir]
+        }
+    }
+}
+
+// querydsl 컴파일시 사용할 옵션 설정
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+compileQuerydsl.doFirst {
+    if (file(querydslDir).exists())
+        delete(file(querydslDir))
+}
+
+// querydsl 이 compileClassPath 를 상속하도록 설정
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    querydsl.extendsFrom compileClasspath
+}
