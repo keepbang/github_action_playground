@@ -4,20 +4,15 @@ on:
   workflow_dispatch:  # click the button on Github repo!
 
 jobs:
-  checkout:
-    name: Chckout
+  get_next_version_tag:
+    name: Get next version tag
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
-  get_next_version_tag:
-    name: Get next version tag
-    runs-on: ubuntu-20.04
-    needs: [checkout]
-    steps:
+          
       - name: Get Previous tag
         id: previous_tag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
