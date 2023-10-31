@@ -94,8 +94,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           #          skipIfReleaseExists: true
-          tag: ${{ steps.tag_version.outputs.new_tag }}
-          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          tag: ${{ needs.tagging.outputs.new_version }}
+          name: Release ${{ needs.tagging.outputs.new_version }}
           body: |
             ${{steps.build_changelog.outputs.changelog}}
 
