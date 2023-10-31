@@ -17,8 +17,8 @@ env:
   LIBRARY_NAME: employee-object
 
 jobs:
-  build:
-
+  deploy-first:
+    name: deploy first
     runs-on: ubuntu-20.04
 
     steps:
@@ -38,7 +38,7 @@ jobs:
 #          chmod +x ./gradle-init_obf.sh
 #          ./gradle-init_obf.sh
 #        shell: bash
-
+#
 #      - name: Build with Gradle
 #        run: ./gradlew ${{ env.MODULE_NAME }}:build
 
@@ -52,13 +52,6 @@ jobs:
           PRERELEASE: true
           PRERELEASE_SUFFIX: ${{ env.LIBRARY_NAME }}
           DEFAULT_BRANCH: library-employee-object
-
-      - name: tag variable
-        id: tag
-        run: |
-          echo ${{ steps.tag_version.outputs.new_tag }}
-          echo ${{ steps.tag_version.outputs.tag }}
-          echo ${{ steps.tag_version.outputs.part }}
 
 #      # suffix 제거 스크립트
 #      - name: library version extraction
@@ -76,3 +69,13 @@ jobs:
 #        uses: mikepenz/release-changelog-builder-action@v4
 #        env:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deloy-second:
+    name: deloy second
+    needs: [deploy-first]
+    runs-on: ubuntu-20.04
+    steps:
+
+      - name: output needs variable
+        run: |
+          echo ${{ needs.tagging.steps.tag_version.outputs.new_tag }}
