@@ -11,6 +11,7 @@
 package com.mco.playground.grassland;
 
 import com.mco.playground.grassland.animal.bird.Eagle;
+import com.mco.playground.grassland.animal.bird.Owl;
 import com.mco.playground.grassland.animal.fish.Shark;
 import com.mco.playground.grassland.animal.mammal.Elephant;
 import com.mco.playground.shared.animal.Animal;
@@ -42,9 +43,11 @@ public class GrasslandApplication {
     Animal eagle = new Eagle();
     Animal shark = new Shark();
     Animal elephant = new Elephant();
+    Animal owl = new Owl();
 
     eagle.showUp();
     shark.showUp();
     elephant.showUp();
+    owl.showUp();
   }
 }
