@@ -29,18 +29,18 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Check my source
-        run: pwd && ls -al
+#      - name: Check my source
+#        run: pwd && ls -al
+#
+#      - name: Init gradle
+#        run: |
+#          mkdir -p ~/.gradle/
+#          chmod +x ./gradle-init_obf.sh
+#          ./gradle-init_obf.sh
+#        shell: bash
 
-      - name: Init gradle
-        run: |
-          mkdir -p ~/.gradle/
-          chmod +x ./gradle-init_obf.sh
-          ./gradle-init_obf.sh
-        shell: bash
-
-      - name: Build with Gradle
-        run: ./gradlew ${{ env.MODULE_NAME }}:build
+#      - name: Build with Gradle
+#        run: ./gradlew ${{ env.MODULE_NAME }}:build
 
       - name: Bump version and push tag
         id: tag_version
