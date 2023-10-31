@@ -71,3 +71,28 @@ jobs:
           body: |
             ${{steps.build_changelog.outputs.changelog}}
         if: success()
+
+      - name: Set and Retrieve Github ENV variables
+        shell: bash
+        run: |
+          tests=16
+          failures=2
+          
+          echo "Tests=$tests" >> $GITHUB_ENV
+          echo "Failures=$failures" >> $GITHUB_ENV
+          
+          # retrieve these GitHub ENV variables
+          echo "${{ env.Failures }} out of ${{ env.Tests }} tests failed on CI"
+
+      - name: Rename released branch
+        id: rename_branch
+        run: |
+          # Set variables
+          echo "VERSION_PART = ${{ steps.tag_version.outputs.part }}" >> $GITHUB_ENV
+          echo "OLD_VERSION = ${{ steps.tag_version.outputs.tag }}" >> $GITHUB_ENV
+          echo "OLD_BRANCH = $VERSION_PART/$OLD_VERSION" >> $GITHUB_ENV
+          echo "NEW_BRANCH = $OLD_BRANCH-released" >> $GITHUB_ENV
+          
+          # Rename branch
+          # git push <remote> <remote>/<old_name>:refs/heads/<new_name> :<old_name>
+          git push origin origin/${{ env.OLD_BRANCH }}:refs/heads/${{ env.NEW_BRANCH }} :${{ env.OLD_BRANCH }}
