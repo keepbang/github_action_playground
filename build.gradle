@@ -1,5 +1,5 @@
 buildscript {
-    project.ext.set("springVersion", "3.0.6")
+    project.ext.set("springVersion", "3.1.2")
     project.ext.set("springPlugin", "1.1.0")
     project.ext.set("hibernate.version", "6.2.3.Final") // https://hibernate.atlassian.net/browse/HHH-16169
 
