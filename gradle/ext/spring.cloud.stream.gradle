@@ -1,8 +1,0 @@
-dependencies {
-    // spring
-    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-stream
-    implementation 'org.springframework.cloud:spring-cloud-stream'
-    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-stream-kafka
-    implementation 'org.springframework.cloud:spring-cloud-starter-stream-kafka'
-}
-
