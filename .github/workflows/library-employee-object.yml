@@ -20,31 +20,26 @@ jobs:
   build:
     runs-on: ubuntu-20.04
 
-    outputs:
-      new_version: ${{ steps.apply_tag.outputs.new_version }}
-      tag: ${{ steps.apply_tag.outputs.tag }}
-      part: ${{ steps.apply_tag.outputs.part }}
-
     steps:
-#      - uses: actions/checkout@v3
-#      - name: Set up JDK 17
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: '17'
-#          distribution: 'temurin'
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
-#      - name: Check my source
-#        run: pwd && ls -al
-#
-#      - name: Init gradle
-#        run: |
-#          mkdir -p ~/.gradle/
-#          chmod +x ./gradle-init_obf.sh
-#          ./gradle-init_obf.sh
-#        shell: bash
-#
-#      - name: Build with Gradle
-#        run: ./gradlew ${{ env.MODULE_NAME }}:build
+      - name: Check my source
+        run: pwd && ls -al
+
+      - name: Init gradle
+        run: |
+          mkdir -p ~/.gradle/
+          chmod +x ./gradle-init_obf.sh
+          ./gradle-init_obf.sh
+        shell: bash
+
+      - name: Build with Gradle
+        run: ./gradlew ${{ env.MODULE_NAME }}:build
 
       - name: Bump version and push tag
         id: tag_version
@@ -57,37 +52,19 @@ jobs:
           PRERELEASE_SUFFIX: ${{ env.LIBRARY_NAME }}
           DEFAULT_BRANCH: library-employee-object
 
-      - name: Apply output
-        id: apply_tag
+      # suffix 제거 스크립트
+      - name: library version extraction
+        id: alpha_version
         run: |
-          echo "new_version=${{ steps.tag_version.outputs.new_tag }}" >> $GITHUB_OUTPUT
-          echo "tag=${{ steps.tag_version.outputs.tag }}" >> $GITHUB_OUTPUT
-          echo "part=${{ steps.tag_version.outputs.part }}" >> $GITHUB_OUTPUT
+          echo "${{ steps.tag_version.outputs.new_tag }}" | sed 's/-${{ env.LIBRARY_NAME }}//' > alpha_version.txt
+          new_version=`cat alpha_version.txt`
+          echo "VERSION=$new_version" >> $GITHUB_OUTPUT
 
-#      # suffix 제거 스크립트
-#      - name: library version extraction
-#        id: alpha_version
-#        run: |
-#          echo "${{ steps.tag_version.outputs.new_tag }}" | sed 's/-${{ env.LIBRARY_NAME }}//' > alpha_version.txt
-#          new_version=`cat alpha_version.txt`
-#          echo "VERSION=$new_version" >> $GITHUB_OUTPUT
-#
-#      - name: Nexus Repo Publish
-#        run: ./gradlew ${{ env.MODULE_NAME }}:publish -DVERSION=${{ steps.alpha_version.outputs.VERSION }}
-#
-#      - name: Build Changelog
-#        id: github_release
-#        uses: mikepenz/release-changelog-builder-action@v4
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  output:
-    name: tag output
-    needs: [build]
-    runs-on: ubuntu-20.04
+      - name: Nexus Repo Publish
+        run: ./gradlew ${{ env.MODULE_NAME }}:publish -DVERSION=${{ steps.alpha_version.outputs.VERSION }}
 
-    steps:
-      - name: tag_output_step
-        run: |
-          echo ${{ needs.tagging.outputs.new_version }}
-          echo ${{ needs.tagging.outputs.tag }}
-          echo ${{ needs.tagging.outputs.part }}
+      - name: Build Changelog
+        id: github_release
+        uses: mikepenz/release-changelog-builder-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
