@@ -71,11 +71,11 @@ jobs:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deloy-second:
-    name: deloy second
+    name: deploy second
     needs: [deploy-first]
     runs-on: ubuntu-20.04
     steps:
 
       - name: output needs variable
         run: |
-          echo ${{ needs.tagging.steps.tag_version.outputs.new_tag }}
+          echo ${{ needs.deploy-first.steps.tag_version.outputs.new_tag }}
