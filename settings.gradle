@@ -33,7 +33,10 @@ rootProject.name = 'mco-playground'
         "app:grassland",
 
         //------ internal shared ------
-        "rep:shared"
+        "rep:shared",
+
+        //------ external library -----
+        "aid:employee"
 ].each {
     if (it.indexOf("global") != -1) {
         def dir = makeDir(rootDir, it)

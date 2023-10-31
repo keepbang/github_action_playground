@@ -8,12 +8,23 @@ on:
 
 env:
   MODULE_NAME_1: app:grassland
+  APPLICATION_NAME_1: mco-playground-grassland
   MODULE_NAME_2: app:zoo
+  APPLICATION_NAME_2: mco-playground-zoo
+  MODULE_NAME_3: aid:employee
+  LIBRARY_NAME: employee-object
 
 jobs:
-  build-deploy:
+  tagging:
+    name: Bump version tag
     if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-20.04
+
+    outputs:
+      new_version: ${{ steps.tag_version.outputs.new_tag }}
+      tag: ${{ steps.tag_version.outputs.tag }}
+      part: ${{ steps.tag_version.outputs.part }}
+
     steps:
       - uses: trstringer/manual-approval@v1
         with:
@@ -53,6 +64,22 @@ jobs:
           DEFAULT_BUMP: patch # pr 날릴때 major 추가해서 사용
         if: success()
 
+  application-deploy:
+    name: application deploy
+    needs: [tagging]
+    runs-on: ubuntu-20.04
+
+    outputs:
+      change_log: ${{ steps.github_release.outputs.changelog }}
+
+    steps:
+
+      - name: Build with Gradle
+        run: ./gradlew ${{ env.MODULE_NAME_1 }}:build
+
+      - name: Build with Gradle
+        run: ./gradlew ${{ env.MODULE_NAME_2 }}:build
+
       - name: Build Changelog
         id: build_changelog
         uses: mikepenz/release-changelog-builder-action@v4
@@ -68,13 +95,57 @@ jobs:
           name: Release ${{ steps.tag_version.outputs.new_tag }}
           body: |
             ${{steps.build_changelog.outputs.changelog}}
-        if: success()
+
+      # 어플리케이션 1 노션 데이터베이스에 추가
+      - name: Notion release notes ${{ env.MODULE_NAME_1 }} application
+        uses: infinitaslearning/notion-release-notes@main
+        with:
+          token: ${{ secrets.NOTION_TOKEN }}
+          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
+          name: ${{ env.APPLICATION_NAME_1 }}-${{ needs.tagging.outputs.new_version }}
+          tags: ${{ needs.tagging.outputs.new_version }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME_1 }}
+          body: ${{ steps.github_release.outputs.changelog }}
+
+      # 어플리케이션 2 노션 데이터베이스에 추가
+      - name: Notion release notes ${{ env.MODULE_NAME_2 }} application
+        uses: infinitaslearning/notion-release-notes@main
+        with:
+          token: ${{ secrets.NOTION_TOKEN }}
+          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
+          name: ${{ env.APPLICATION_NAME_2 }}-${{ needs.tagging.outputs.new_version }}
+          tags: ${{ needs.tagging.outputs.new_version }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME_2 }}
+          body: ${{ steps.github_release.outputs.changelog }}
+
+  library-publish:
+    name: library publish
+    needs: [tagging, application-deploy]
+    runs-on: ubuntu-20.04
+    steps:
+
+      - name: Nexus Repo Publish
+        run: ./gradlew ${{ env.MODULE_NAME_3 }}:publish -DVERSION=${{ needs.tagging.outputs.new_version }}
+
+      # 라이브러리 1 노션 데이터베이스에 추가
+      - name: Notion release notes ${{ env.MODULE_NAME_3 }} application
+        uses: infinitaslearning/notion-release-notes@main
+        with:
+          token: ${{ secrets.NOTION_TOKEN }}
+          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
+          name: ${{ env.LIBRARY_NAME }}-${{ needs.tagging.outputs.new_version }}
+          tags: ${{ needs.tagging.outputs.new_version }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME_3 }}
+          body: ${{ needs.application-deploy.outputs.change_log }}
+
+  branch-release:
+    name: released branch rename
+    needs: [tagging, application-deploy, library-publish]
+    runs-on: ubuntu-20.04
+    steps:
 
       - name: Set variables
         id: branch_variables
         run: |
-          old_branch="${{ steps.tag_version.outputs.part }}/${{ steps.tag_version.outputs.tag }}"
-          new_branch="${{ steps.tag_version.outputs.part }}/${{ steps.tag_version.outputs.tag }}-released"
+          old_branch="${{ needs.tagging.outputs.part }}/${{ needs.tagging.outputs.tag }}"
+          new_branch="${{ needs.tagging.outputs.part }}/${{ needs.tagging.outputs.tag }}-released"
           echo "OLD_BRANCH=$old_branch" >> $GITHUB_OUTPUT
           echo "NEW_BRANCH=$new_branch" >> $GITHUB_OUTPUT
 
@@ -84,4 +155,4 @@ jobs:
           # Rename branch
           # git push <remote> <remote>/<old_name>:refs/heads/<new_name> :<old_name>
           git push origin origin/${{ steps.branch_variables.outputs.OLD_BRANCH }}:refs/heads/${{ steps.branch_variables.outputs.NEW_BRANCH }} :${{ steps.branch_variables.outputs.OLD_BRANCH }}
-        if: ${{ steps.tag_version.outputs.part != 'patch' }}
+        if: ${{ needs.tagging.outputs.part != 'patch' }}
