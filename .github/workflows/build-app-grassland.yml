@@ -11,10 +11,6 @@ on:
   push:
     branches: [ "build-app-grassland" ]
 
-permissions:
-  contents: read
-  actions: read
-
 env:
   MODULE_NAME: app:grassland
 
