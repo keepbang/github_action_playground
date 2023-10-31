@@ -21,6 +21,9 @@ jobs:
     name: deploy first
     runs-on: ubuntu-20.04
 
+    outputs:
+      version: ${{ steps.apply_tag.outputs.version }}
+
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -53,6 +56,10 @@ jobs:
           PRERELEASE_SUFFIX: ${{ env.LIBRARY_NAME }}
           DEFAULT_BRANCH: library-employee-object
 
+      - name: apply new tag
+        id: apply_tag
+        run: echo "version=${{ steps.tag_version.outputs.new_tag }}" >> $GITHUB_OUTPUT
+
 #      # suffix 제거 스크립트
 #      - name: library version extraction
 #        id: alpha_version
@@ -78,4 +85,4 @@ jobs:
 
       - name: output needs variable
         run: |
-          echo ${{ needs.deploy-first.steps.tag_version.outputs.new_tag }}
+          echo ${{ needs.deploy-first.outputs.version }}
