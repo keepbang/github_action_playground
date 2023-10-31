@@ -16,7 +16,8 @@
 - [Part 2. Library Branch](#-part-2-library-branch)
 - [Part 3. Alpha or Staging Branch](#-part-3-alpha-or-staging-branch)
 - [Part 4. Major & Minor Branch](#-part-4-major--minor-branch)
-- [Part 5. Release](#-part-5-release-branchmain)
+- [Part 5. Release Branch](#-part-5-release-branch)
+- [Part 6. Bugfix](#-part-5-release-branchmain)
 - [Finish](#-finish)
 ---
 <br/>
@@ -100,11 +101,11 @@ feature에 브랜치에서 작업 진행 후 작업 내용에 따라 major 또�
 <br/>
 <br/>
 
-## 🔥 Part 5. Release Branch(main)
+## 🔥 Part 5. Release Branch
 
-스프린트가 종료되면 minor 또는 major에 내용을 main에 머지하면서 작업한 내용이 운영에 반영이 됩니다.
+스프린트가 종료되면 minor 또는 major에 내용을 `release branch`에 머지하면서 작업한 내용이 운영에 반영 됩니다.
 
-main에는 직접적으로 머지 할 수 없으며, pull request를 통해 머지를 진행해야 합니다.
+`release branch`는 `main` 브랜치를 사용하고 있고 직접적으로 머지 할 수 없으며, pull request를 통해 머지를 진행해야 합니다.
 
 > [Part 4](#-part-4-major--minor-branch) 에서 머지한 내용으로 pull request 를 작성해 주세요.
 
