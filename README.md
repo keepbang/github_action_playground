@@ -1,15 +1,25 @@
 # 👋 mco-playground
 신규 입사자들이 본 업무를 시작하기 전에 사내 컨벤션에 적응할 수 있도록 먼저 코드를 기여해 볼 수 있는 놀이터.
 
-<pre>
+```
   _   _      _ _         __  __  ____                                 _   _               _ 
  | | | | ___| | | ___   |  \/  |/ ___|___  _ __ _ __   ___  _ __ __ _| |_(_) ___  _ __   | |
  | |_| |/ _ \ | |/ _ \  | |\/| | |   / _ \| '__| '_ \ / _ \| '__/ _` | __| |/ _ \| '_ \  | |
  |  _  |  __/ | | (_) | | |  | | |__| (_) | |  | |_) | (_) | | | (_| | |_| | (_) | | | | |_|
  |_| |_|\___|_|_|\___/  |_|  |_|\____\___/|_|  | .__/ \___/|_|  \__,_|\__|_|\___/|_| |_| (_)
                                                |_|                                          
+```
 
-</pre>
+
+- [Overview](#-overview)
+- [Part 1. Feature Branch](#-part-1-feature-branch)
+- [Part 2. Library Branch](#-part-2-library-branch)
+- [Part 3. Alpha or Staging Branch](#-part-3-alpha-or-staging-branch)
+- [Part 4. Major & Minor Branch](#-part-4-major--minor-branch)
+- [Part 5. Release](#-part-5-release-branchmain)
+- [Finish](#-finish)
+---
+<br/>
 
 ## 🔭 Overview
 
@@ -17,11 +27,11 @@
 
 - 싱글 모듈
 
-![single_module](https://github.com/mcorporation-dev/mco-playground/assets/38740455/8bee0ed6-5d7c-4640-a7a5-0e58e74fcdd5)
+![single_module](./images/single_module.png)
 
 - 멀티 모듈
 
-![multi_module](https://github.com/mcorporation-dev/mco-playground/assets/38740455/8c479871-9d94-4506-946f-c573be56c459)
+![multi_module](./images/multi_module.png)
 
 - 더 자세한 내용은 노션 페이지에서 확인 할 수 있으며, 각 단계를 차례대로 살펴보겠습니다.
 - [Branching & Publishing](https://www.notion.so/mcorporation-dev/Branching-Publishing-350bb7baba4645f3bd4d69abb92cceee?pvs=4)
@@ -35,9 +45,9 @@ feature 브랜치는 작업 브랜치로 모든 개발자는 feature 브랜치�
 
 작업 내용에 따라 minor 또는 major 브랜치에서 새 feature 브랜치를 생성하고 작업을 진행 합니다.
 
-![create_new_branch](https://github.com/mcorporation-dev/mco-playground/assets/38740455/d5ac492b-0469-478c-a5b4-3b2d601fd9f3)
+![create_new_branch](./images/create_new_branch.png)
 
-![new_feature](https://github.com/mcorporation-dev/mco-playground/assets/38740455/53378b8c-65e4-4240-9716-655ea5147b22)
+![new_feature](./images/new_feature.png)
 
 > feature 브랜치 생성 후 작업을 진행해 보세요.
 
@@ -90,13 +100,29 @@ feature에 브랜치에서 작업 진행 후 작업 내용에 따라 major 또�
 <br/>
 <br/>
 
-## 🔥 Part 5. Release
+## 🔥 Part 5. Release Branch(main)
 
 스프린트가 종료되면 minor 또는 major에 내용을 main에 머지하면서 작업한 내용이 운영에 반영이 됩니다.
 
 main에는 직접적으로 머지 할 수 없으며, pull request를 통해 머지를 진행해야 합니다.
 
-> [Part 4](#-part-4-major--minor-branch) 에서 머지한 내용으로 pull request를 작성해 주세요.
+> [Part 4](#-part-4-major--minor-branch) 에서 머지한 내용으로 pull request 를 작성해 주세요.
+
+
+<br/>
+<br/>
+
+## 🔥 Part 6. Bugfix
+
+`Bugfix`는 `main` 브랜치에서 브랜치를 만들어 바로 적용해야 합니다.
+
+이슈가 발생되고 이슈에 담당자로 배정되면 main 브랜치에서 feature 브랜치를 생성하여 작업을 진행하
+
+staging 브랜치에 머지 또는 pull request를 요청하여 테스트를 진행합니다.
+
+문제가 없다면 main 브랜치에 pull request를 요청하여 배포를 합니다.
+
+> [Part 5](#-part-5-release-branchmain) 에서 작업한 내용에 버그가 발생했습니다! 해당 내용을 수정하여 pull request 를 요청해 주세요
 
 
 <br/>
