@@ -21,9 +21,9 @@ jobs:
     runs-on: ubuntu-20.04
 
     outputs:
-      new_version: ${{ steps.tag_version.outputs.new_tag }}
-      tag: ${{ steps.tag_version.outputs.tag }}
-      part: ${{ steps.tag_version.outputs.part }}
+      new_version: ${{ steps.apply_tag.outputs.new_version }}
+      tag: ${{ steps.apply_tag.outputs.tag }}
+      part: ${{ steps.apply_tag.outputs.part }}
 
     steps:
 #      - uses: actions/checkout@v3
@@ -56,6 +56,13 @@ jobs:
           PRERELEASE: true
           PRERELEASE_SUFFIX: ${{ env.LIBRARY_NAME }}
           DEFAULT_BRANCH: library-employee-object
+
+      - name: Apply output
+        id: apply_tag
+        run: |
+          echo "new_version=${{ steps.tag_version.outputs.new_tag }}" >> $GITHUB_OUTPUT
+          echo "tag=${{ steps.tag_version.outputs.tag }}" >> $GITHUB_OUTPUT
+          echo "part=${{ steps.tag_version.outputs.part }}" >> $GITHUB_OUTPUT
 
 #      # suffix 제거 스크립트
 #      - name: library version extraction
