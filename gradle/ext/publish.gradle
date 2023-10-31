@@ -1,0 +1,23 @@
+apply plugin: 'maven-publish'
+
+publishing {
+    def nexusUrl = "http://pkg.mtar.co.kr/repository"
+    def nexusId = "map-dev"
+    def nexusPasswd = "2jq6n2nWc5VE"
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url "$nexusUrl/maven-releases"
+            allowInsecureProtocol = true
+            credentials {
+                username = "$nexusId"
+                password = "$nexusPasswd"
+            }
+
+        }
+    }
+}
