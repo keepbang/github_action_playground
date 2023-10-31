@@ -1,0 +1,25 @@
+apply from : "${project.getRootDir()}/gradle/ext/spring.gradle"
+apply from : "${project.getRootDir()}/gradle/ext/spring3.common.gradle"
+apply from : "${project.getRootDir()}/gradle/ext/publish.gradle"
+
+version System.getProperties()["VERSION"]
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'employee-object'
+        }
+    }
+}
+
+dependencies {
+
+}
+
+jar {
+    enabled = true
+}
+
+bootJar {
+    enabled = false
+}
