@@ -77,10 +77,6 @@ jobs:
           echo "OLD_BRANCH=$old_branch" >> $GITHUB_OUTPUT
           echo "NEW_BRANCH=$new_branch" >> $GITHUB_OUTPUT
 
-      - name: test run
-        run: |
-          echo "${{ steps.branch_variables.outputs.NEW_BRANCH }} :${{ steps.branch_variables.outputs.OLD_BRANCH }}"
-
       - name: Rename released branch
         id: rename_branch
         run: |
