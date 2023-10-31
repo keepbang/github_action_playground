@@ -1,0 +1,12 @@
+apply plugin: "com.star-zero.gradle.githook"
+apply plugin: "ru.netris.commitlint"
+
+githook {
+    failOnMissingHooksDir = false
+    createHooksDirIfNotExist = false
+    hooks {
+        "commit-msg" {
+            task = "commitlint -Dmsgfile=\$1"
+        }
+    }
+}
