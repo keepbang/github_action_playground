@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * create on 10/30/23. create by IntelliJ IDEA.
  *
- * <p> 동물의 종류. </p>
+ * <p> 동물의 과. </p>
  *
  * @author SeokGyu Hwang
  * @version 1.0
@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Getter
 @RequiredArgsConstructor
-public enum AnimalType {
+public enum AnimalClass {
   /**
    * 포유류.
    */
@@ -54,12 +54,12 @@ public enum AnimalType {
    * @return {@code AnimalType} (찾지 못하면 {@code null})
    */
   @JsonCreator
-  public static AnimalType fromValue(String value) {
-    AnimalType[] animalTypes = values();
+  public static AnimalClass fromValue(String value) {
+    AnimalClass[] animalClasses = values();
 
-    for (AnimalType animalType : animalTypes) {
-      if (animalType.value.equals(value)) {
-        return animalType;
+    for (AnimalClass animalClass : animalClasses) {
+      if (animalClass.value.equals(value)) {
+        return animalClass;
       }
     }
 

@@ -10,7 +10,7 @@
 
 package com.mco.playground.shared.animal;
 
-import com.mco.playground.shared.enums.AnimalType;
+import com.mco.playground.shared.enums.AnimalClass;
 import jakarta.annotation.Nullable;
 
 /**
@@ -27,17 +27,20 @@ public class Bird extends Animal {
   /**
    * constructor.
    *
+   * @param species     동물의 종
    * @param animalSound 조류의 울음 소리.
    */
-  public Bird(@Nullable String animalSound) {
-    super(AnimalType.BIRD, animalSound);
+  public Bird(String species, @Nullable String animalSound) {
+    super(AnimalClass.BIRD, species, animalSound);
   }
 
   /**
    * constructor.
+   *
+   * @param species 동물의 종
    */
-  public Bird() {
-    super(AnimalType.BIRD);
+  public Bird(String species) {
+    super(AnimalClass.BIRD, species);
   }
 
   /**

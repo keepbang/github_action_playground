@@ -29,8 +29,8 @@ ext {
 rootProject.name = 'mco-playground'
 [
         //------ application ------
-        "app:onboarding",
-        "app:graduation",
+        "app:zoo",
+        "app:grassland",
 
         //------ internal shared ------
         "rep:shared"

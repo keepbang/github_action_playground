@@ -10,7 +10,7 @@
 
 package com.mco.playground.shared.animal;
 
-import com.mco.playground.shared.enums.AnimalType;
+import com.mco.playground.shared.enums.AnimalClass;
 import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -28,9 +28,14 @@ import org.apache.commons.lang.StringUtils;
 public class Animal {
 
   /**
-   * 동물 종류.
+   * 동물의 과.
    */
-  private final AnimalType animalType;
+  private final AnimalClass animalClass;
+
+  /**
+   * 동물의 종.
+   */
+  protected final String species;
 
   /**
    * 동물이 내는 소리.
@@ -41,21 +46,24 @@ public class Animal {
   /**
    * constructor.
    *
-   * @param animalType  동물 종류
+   * @param animalClass 동물의 과
+   * @param species     동물의 종
    * @param animalSound 동물이 내는 소리
    */
-  public Animal(AnimalType animalType, @Nullable String animalSound) {
-    this.animalType = animalType;
+  public Animal(AnimalClass animalClass, String species, @Nullable String animalSound) {
+    this.animalClass = animalClass;
+    this.species = species;
     this.animalSound = animalSound;
   }
 
   /**
    * constructor.
    *
-   * @param animalType 동물 종류
+   * @param animalClass 동물 종류
+   * @param species     동물의 종
    */
-  public Animal(AnimalType animalType) {
-    this(animalType, null);
+  public Animal(AnimalClass animalClass, String species) {
+    this(animalClass, species, null);
   }
 
   /**
@@ -87,14 +95,15 @@ public class Animal {
    */
   private void inform() {
     log.info("-----------------------------------------");
-    log.info("새로운 동물을 발견했습니다! \uD83D\uDE03");
-    log.info("이 동물의 종류는 {}입니다.", this.animalType);
+    log.info("새로운 동물을 발견했습니다!");
+    log.info("이 동물의 종류는 {}입니다.", this.species);
+    log.info("이 동물의 과는 {}입니다.", this.animalClass.getValue());
   }
 
   /**
    * 동물이 사라지다.
    */
   private void disappeared() {
-    log.info("동물이 먹이를 찾아 떠났습니다... \uD83D\uDE1E");
+    log.info("동물이 먹이를 찾아 떠났습니다...");
   }
 }

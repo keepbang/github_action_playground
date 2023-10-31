@@ -10,7 +10,7 @@
 
 package com.mco.playground.shared.animal;
 
-import com.mco.playground.shared.enums.AnimalType;
+import com.mco.playground.shared.enums.AnimalClass;
 import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,22 +24,25 @@ import lombok.extern.slf4j.Slf4j;
  * @since 1.0
  */
 @Slf4j
-public class Fish extends Animal{
+public class Fish extends Animal {
 
   /**
    * constructor.
    *
+   * @param species     동물의 종
    * @param animalSound 어류의 울음 소리.
    */
-  public Fish(@Nullable String animalSound) {
-    super(AnimalType.FISH, animalSound);
+  public Fish(String species, @Nullable String animalSound) {
+    super(AnimalClass.FISH, species, animalSound);
   }
 
   /**
    * constructor.
+   *
+   * @param species 동물의 종
    */
-  public Fish() {
-    super(AnimalType.FISH);
+  public Fish(String species) {
+    super(AnimalClass.FISH, species);
   }
 
   /**
@@ -56,6 +59,6 @@ public class Fish extends Animal{
   @Override
   protected void makeSound() {
     super.makeSound();
-    log.info("\uD83D\uDC1F 뻐끔... 뻐끔...");
+    log.info("뻐끔... 뻐끔...");
   }
 }
