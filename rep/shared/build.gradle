@@ -1,0 +1,14 @@
+apply from: "${project.getRootDir()}/gradle/ext/spring3.common.gradle"
+apply from: "${project.getRootDir()}/gradle/ext/spring.gradle"
+
+dependencies {
+
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
