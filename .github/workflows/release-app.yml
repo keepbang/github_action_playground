@@ -1,11 +1,14 @@
 name: Production build.
 
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches: [ "main" ]
 
 env:
-  MODULE_NAME: app:grassland
+  MODULE_NAME_1: app:grassland
+  MODULE_NAME_2: app:zoo
 
 jobs:
   build-deploy:
@@ -15,7 +18,7 @@ jobs:
         with:
           secret: ${{ github.TOKEN }}
           # todo: Add all of team members
-          approvers: sghwang-mcorpor,keepbang,
+          approvers: sghwang-mcorpor,keepbang
           minimum-approvals: 1
 
       - name: Checkout
@@ -38,7 +41,10 @@ jobs:
         shell: bash
 
       - name: Build with Gradle
-        run: ./gradlew ${{ env.MODULE_NAME }}:build
+        run: ./gradlew ${{ env.MODULE_NAME_1 }}:build
+
+      - name: Build with Gradle
+        run: ./gradlew ${{ env.MODULE_NAME_2 }}:build
 
       - name: Bump version and push tag
         id: tag_version
