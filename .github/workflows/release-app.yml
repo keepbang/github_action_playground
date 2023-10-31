@@ -33,6 +33,25 @@ jobs:
           approvers: sghwang-mcorpor,keepbang
           minimum-approvals: 1
 
+      - name: Bump version and push tag
+        id: tag_version
+        uses: anothrNick/github-tag-action@1.67.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: false
+          DEFAULT_BUMP: patch # pr 날릴때 major 추가해서 사용
+        if: success()
+
+  application-deploy:
+    name: application deploy
+    needs: [tagging]
+    runs-on: ubuntu-20.04
+
+    outputs:
+      change_log: ${{ steps.github_release.outputs.changelog }}
+
+    steps:
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -55,30 +74,11 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew ${{ env.MODULE_NAME_1 }}:build
 
-      - name: Bump version and push tag
-        id: tag_version
-        uses: anothrNick/github-tag-action@1.67.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: false
-          DEFAULT_BUMP: patch # pr 날릴때 major 추가해서 사용
-        if: success()
-
-  application-deploy:
-    name: application deploy
-    needs: [tagging]
-    runs-on: ubuntu-20.04
-
-    outputs:
-      change_log: ${{ steps.github_release.outputs.changelog }}
-
-    steps:
-
-      - name: Build with Gradle
-        run: ./gradlew ${{ env.MODULE_NAME_1 }}:build
-
       - name: Build with Gradle
         run: ./gradlew ${{ env.MODULE_NAME_2 }}:build
+
+      - name: Nexus Repo Publish
+        run: ./gradlew ${{ env.MODULE_NAME_3 }}:publish -DVERSION=${{ needs.tagging.outputs.new_version }}
 
       - name: Build Changelog
         id: build_changelog
@@ -116,28 +116,20 @@ jobs:
           tags: ${{ needs.tagging.outputs.new_version }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME_2 }}
           body: ${{ steps.github_release.outputs.changelog }}
 
-  library-publish:
-    name: library publish
-    needs: [tagging, application-deploy]
-    runs-on: ubuntu-20.04
-    steps:
-
-      - name: Nexus Repo Publish
-        run: ./gradlew ${{ env.MODULE_NAME_3 }}:publish -DVERSION=${{ needs.tagging.outputs.new_version }}
-
       # 라이브러리 1 노션 데이터베이스에 추가
-      - name: Notion release notes ${{ env.MODULE_NAME_3 }} application
+      - name: Notion release notes ${{ env.MODULE_NAME_3 }} library
         uses: infinitaslearning/notion-release-notes@main
         with:
           token: ${{ secrets.NOTION_TOKEN }}
           database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
           name: ${{ env.LIBRARY_NAME }}-${{ needs.tagging.outputs.new_version }}
           tags: ${{ needs.tagging.outputs.new_version }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME_3 }}
-          body: ${{ needs.application-deploy.outputs.change_log }}
+          body: ${{ steps.github_release.outputs.changelog }}
+
 
   branch-release:
     name: released branch rename
-    needs: [tagging, application-deploy, library-publish]
+    needs: [tagging, application-deploy]
     runs-on: ubuntu-20.04
     steps:
 
