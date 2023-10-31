@@ -88,10 +88,10 @@ jobs:
         id: rename_branch
         run: |
           # Set variables
-          echo "VERSION_PART = ${{ steps.tag_version.outputs.part }}" >> $GITHUB_ENV
-          echo "OLD_VERSION = ${{ steps.tag_version.outputs.tag }}" >> $GITHUB_ENV
-          echo "OLD_BRANCH = $VERSION_PART/$OLD_VERSION" >> $GITHUB_ENV
-          echo "NEW_BRANCH = $OLD_BRANCH-released" >> $GITHUB_ENV
+          echo "VERSION_PART=${{ steps.tag_version.outputs.part }}" >> $GITHUB_ENV
+          echo "OLD_VERSION=${{ steps.tag_version.outputs.tag }}" >> $GITHUB_ENV
+          echo "OLD_BRANCH=$VERSION_PART/$OLD_VERSION" >> $GITHUB_ENV
+          echo "NEW_BRANCH=$OLD_BRANCH-released" >> $GITHUB_ENV
           
           # Rename branch
           # git push <remote> <remote>/<old_name>:refs/heads/<new_name> :<old_name>
