@@ -12,6 +12,7 @@ env:
 
 jobs:
   build-deploy:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-20.04
     steps:
       - uses: trstringer/manual-approval@v1
@@ -83,3 +84,4 @@ jobs:
           # Rename branch
           # git push <remote> <remote>/<old_name>:refs/heads/<new_name> :<old_name>
           git push origin origin/${{ steps.branch_variables.outputs.OLD_BRANCH }}:refs/heads/${{ steps.branch_variables.outputs.NEW_BRANCH }} :${{ steps.branch_variables.outputs.OLD_BRANCH }}
+        if: ${{ steps.tag_version.outputs.part != 'patch' }}
