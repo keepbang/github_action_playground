@@ -123,7 +123,7 @@ staging 브랜치에 머지 또는 pull request를 요청하여 테스트를 진
 
 문제가 없다면 main 브랜치에 pull request를 요청하여 배포를 합니다.
 
-> [Part 5](#-part-5-release-branchmain) 에서 작업한 내용에 버그가 발생했습니다! 해당 내용을 수정하여 pull request 를 요청해 주세요
+> [Part 5](#-part-5-release-branchmain) 에서 올린 내용에 버그가 발생했습니다! 해당 내용을 수정하여 pull request 를 요청해 주세요
 
 
 <br/>
