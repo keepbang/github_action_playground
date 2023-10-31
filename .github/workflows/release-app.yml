@@ -43,9 +43,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew ${{ env.MODULE_NAME_1 }}:build
 
-      - name: Build with Gradle
-        run: ./gradlew ${{ env.MODULE_NAME_2 }}:build
-
       - name: Bump version and push tag
         id: tag_version
         uses: anothrNick/github-tag-action@1.67.0
@@ -71,3 +68,18 @@ jobs:
           body: |
             ${{steps.build_changelog.outputs.changelog}}
         if: success()
+
+      - name: Set variables
+        id: branch_variables
+        run: |
+          old_branch="${{ steps.tag_version.outputs.part }}/${{ steps.tag_version.outputs.tag }}"
+          new_branch="${{ steps.tag_version.outputs.part }}/${{ steps.tag_version.outputs.tag }}-released"
+          echo "OLD_BRANCH=$old_branch" >> $GITHUB_OUTPUT
+          echo "NEW_BRANCH=$new_branch" >> $GITHUB_OUTPUT
+
+      - name: Rename released branch
+        id: rename_branch
+        run: |
+          # Rename branch
+          # git push <remote> <remote>/<old_name>:refs/heads/<new_name> :<old_name>
+          git push origin origin/${{ steps.branch_variables.outputs.OLD_BRANCH }}:refs/heads/${{ steps.branch_variables.outputs.NEW_BRANCH }} :${{ steps.branch_variables.outputs.OLD_BRANCH }}
