@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: '0 9 * * 1'
     # scheduled at 09:00 on Monday
-#  workflow_dispatch:  # click the button on Github repo!
+  workflow_dispatch:  # click the button on Github repo!
 
 env:
   REPO_NAME: mcorporation-dev/mco-playground
