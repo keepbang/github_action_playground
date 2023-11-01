@@ -57,7 +57,7 @@ jobs:
             
             }
             
-            const joinStr = commitList.join("  \n  \n  \n");
+            const joinStr = commitList.join("### ");
             
             console.log(joinStr);
             
