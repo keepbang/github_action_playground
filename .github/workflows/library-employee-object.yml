@@ -34,25 +34,6 @@ jobs:
       - name: Check my source
         run: pwd && ls -al
 
-#  {
-#    author: {
-#      email: 'gb.chae@mcorpor.com',
-#      name: 'keepbang',
-#      username: 'keepbang'
-#    },
-#    committer: {
-#      email: 'gb.chae@mcorpor.com',
-#      name: 'keepbang',
-#      username: 'keepbang'
-#    },
-#    distinct: false,
-#    id: '1bc5d9882bd054db559c013e569b62ad1cbe67ed',
-#    message: 'feat: test용 커밋\n\n- 여러 커밋을 볼 수 있도록 만들었습니다.',
-#    timestamp: '2023-11-01T17:48:24+09:00',
-#    tree_id: '5acecebe611c17e0bfb560a8d025577b988bd5b7',
-#    url: 'https://github.com/mcorporation-dev/mco-playground/commit/1bc5d9882bd054db559c013e569b62ad1cbe67ed'
-#  }
-
       - name: Commits parsing
         uses: actions/github-script@v6
         id: commit_list
@@ -71,7 +52,7 @@ jobs:
             }
             
             commitList.push("-----")
-            
+
             return commitList.join('  \n  \n  \n');
 
       - name: Logging
