@@ -49,7 +49,7 @@ jobs:
                                 commit.message,
                                 commit.url
               ].join("\n");
-              
+            
               commitList.push(content);
               
               commitList.push(" ---");
