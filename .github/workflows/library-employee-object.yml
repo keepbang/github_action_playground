@@ -95,6 +95,7 @@ jobs:
 #        run: ./gradlew ${{ env.MODULE_NAME }}:publish -DVERSION=${{ steps.alpha_version.outputs.VERSION }}
 #
 
+
       # 라이브러리 노션 데이터베이스에 추가
       - name: Notion release notes ${{ env.MODULE_NAME }} library
         uses: infinitaslearning/notion-release-notes@v0.6
