@@ -71,4 +71,4 @@ jobs:
           database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
           name: ${{ env.LIBRARY_NAME }}-${{ steps.alpha_version.outputs.VERSION }}
           tags: ${{ steps.alpha_version.outputs.VERSION }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME }}
-          body: ${{ github.event.head_commit.message }}
+          body: ${{ github.event.commits }}
