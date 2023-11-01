@@ -71,6 +71,7 @@ jobs:
             }
             return commitList.join('<hr/><br/><br/>');
 
+
       - name: Logging
         run: |
           echo "${{ steps.commit_list.outputs.result }}"
