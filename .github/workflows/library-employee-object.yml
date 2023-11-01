@@ -61,15 +61,19 @@ jobs:
           script: |
             const event = ${{ toJSON(github.event) }};
             const commitList = [];
+            commitList.push("#Commit List\n---")
             for (const commit of event.commits) {
               const content = [commit.timestamp,
-                                commit.committer.username,
+                                "commit 사용자 : " + commit.committer.username,
                                 commit.message,
                                 commit.url
               ].join('\n');
               commitList.push(content);
             }
-            return commitList.join('<hr/><br/><br/>');
+            
+            commitList.push("---")
+            
+            return commitList.join('\n\n\n');
 
 
       - name: Logging
