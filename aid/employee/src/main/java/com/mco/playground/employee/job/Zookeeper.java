@@ -6,7 +6,8 @@ import com.mco.playground.employee.common.Person;
  * create on 2023/10/31.
  * create by IntelliJ IDEA.
  *
- * <p> 클래스 설명 </p>
+ * <p> 사육사
+ * 객체. </p>
  *
  * @author Gibyoung Chae (keepbang)
  * @version 1.0
