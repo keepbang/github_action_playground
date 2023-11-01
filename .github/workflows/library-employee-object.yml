@@ -43,7 +43,7 @@ jobs:
             const event = ${{ toJSON(github.event) }};
             const commitList = [];
             commitList.push("# Commit List \n ");
-            commitList.push("###  \n ");
+            commitList.push("####   \n ");
             for (const commit of event.commits) {
               const content = ["**" + commit.timestamp + "**",
                                 "**" + commit.committer.username + "**",
@@ -55,7 +55,7 @@ jobs:
             
             }
             
-            const joinStr = commitList.join(" \n ###  \n ");
+            const joinStr = commitList.join(" \n ####   \n ");
             
             console.log(joinStr);
             
