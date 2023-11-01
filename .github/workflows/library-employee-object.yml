@@ -45,15 +45,15 @@ jobs:
             commitList.push("# Commit List");
             commitList.push("\n ");
             for (const commit of event.commits) {
-              const content = [commit.timestamp,
-                                commit.committer.username,
-                                commit.message,
-                                commit.url
+              const content = ["-" + commit.timestamp,
+                                "-" + commit.committer.username,
+                                "-" + commit.message,
+                                "-" + commit.url
               ].join("\n");
             
               commitList.push(content);
               
-              commitList.push("--- ");
+              commitList.push("- --- ");
               commitList.push("----- ");
             }
             return commitList.join("\n \n ");
