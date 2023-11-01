@@ -36,7 +36,7 @@ jobs:
 
       - name: Logging
         run: |
-          echo "${{toJSON(github.commits)}}"
+          echo "${{toJSON(github.event.commits)}}"
 
 #      - name: Init gradle
 #        run: |
