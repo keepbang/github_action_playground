@@ -35,8 +35,13 @@ jobs:
         run: pwd && ls -al
 
       - name: Logging
-        run: |
-          echo "${{toJSON(github.event.commits)}}"
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const event = ${{ toJSON(github.event) }}
+            for (const commit of event.commits) {
+              console.log(commit);
+            }
 
 #      - name: Init gradle
 #        run: |
