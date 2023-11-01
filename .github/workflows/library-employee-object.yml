@@ -75,7 +75,6 @@ jobs:
         run: |
           echo "${{ steps.commit_list.outputs.result }}"
 
-
 #      - name: Init gradle
 #        run: |
 #          mkdir -p ~/.gradle/
