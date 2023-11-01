@@ -67,9 +67,45 @@ jobs:
       # Step 3: Display a sample message based on the sync output var 'has_new_commits'
       - name: New commits found
         if: steps.sync.outputs.has_new_commits == 'true'
-        run: echo "New commits were found to sync."
+        run: echo "New commits from major were found to sync."
 
       - name: No new commits
         if: steps.sync.outputs.has_new_commits == 'false'
-        run: echo "There were no new commits."
+        run: echo "There were no new commits from major."
+
+  sync_from_minor:
+    runs-on: ubuntu-20.04
+    needs: [get_next_version_tag]
+    name: Sync latest commits from minor branch
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ env.STAGING_BRANCH_1 }}
+          # REQUIRED if your upstream repo is private (see wiki)
+          persist-credentials: false
           
+      # REQUIRED step
+      # Step 2: run the sync action
+      - name: Sync upstream changes
+        id: sync
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
+        with:
+          target_sync_branch: ${{ env.STAGING_BRANCH_1 }}
+          # REQUIRED 'target_repo_token' exactly like this!
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+          upstream_sync_branch: minor/${{ needs.get_next_version_tag.outputs.next_minor_version }}
+          upstream_sync_repo: ${{ env.REPO_NAME }}
+          upstream_repo_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+          # Set test_mode true to run tests instead of the true action!!
+          test_mode: false
+
+      # Step 3: Display a sample message based on the sync output var 'has_new_commits'
+      - name: New commits found
+        if: steps.sync.outputs.has_new_commits == 'true'
+        run: echo "New commits from minor were found to sync."
+
+      - name: No new commits
+        if: steps.sync.outputs.has_new_commits == 'false'
+        run: echo "There were no new commits from minor."          
