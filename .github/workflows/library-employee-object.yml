@@ -43,6 +43,7 @@ jobs:
               console.log(commit);
             }
 
+
 #      - name: Init gradle
 #        run: |
 #          mkdir -p ~/.gradle/
