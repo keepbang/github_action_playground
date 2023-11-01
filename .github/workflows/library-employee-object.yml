@@ -75,7 +75,6 @@ jobs:
             
             return commitList.join('\n\n\n');
 
-
       - name: Logging
         run: |
           echo "${{ steps.commit_list.outputs.result }}"
@@ -114,7 +113,7 @@ jobs:
 #
       # 라이브러리 노션 데이터베이스에 추가
       - name: Notion release notes ${{ env.MODULE_NAME }} library
-        uses: infinitaslearning/notion-release-notes@main
+        uses: infinitaslearning/notion-release-notes@v0.6
         with:
           token: ${{ secrets.NOTION_TOKEN }}
           database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
