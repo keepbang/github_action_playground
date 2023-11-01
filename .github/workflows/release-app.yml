@@ -107,7 +107,7 @@ jobs:
           database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
           name: ${{ env.APPLICATION_NAME_1 }}-${{ needs.tagging.outputs.new_version }}
           tags: ${{ needs.tagging.outputs.new_version }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME_1 }}
-          body: ${{ steps.github_release.outputs.changelog }}
+          body: ${{ steps.build_changelog.outputs.changelog }}
 
       # 어플리케이션 2 노션 데이터베이스에 추가
       - name: Notion release notes ${{ env.MODULE_NAME_2 }} application
@@ -117,7 +117,7 @@ jobs:
           database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
           name: ${{ env.APPLICATION_NAME_2 }}-${{ needs.tagging.outputs.new_version }}
           tags: ${{ needs.tagging.outputs.new_version }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME_2 }}
-          body: ${{ steps.github_release.outputs.changelog }}
+          body: ${{ steps.build_changelog.outputs.changelog }}
 
       # 라이브러리 1 노션 데이터베이스에 추가
       - name: Notion release notes ${{ env.MODULE_NAME_3 }} library
@@ -127,7 +127,7 @@ jobs:
           database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
           name: ${{ env.LIBRARY_NAME }}-${{ needs.tagging.outputs.new_version }}
           tags: ${{ needs.tagging.outputs.new_version }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME_3 }}
-          body: ${{ steps.github_release.outputs.changelog }}
+          body: ${{ steps.build_changelog.outputs.changelog }}
 
 
   branch-release:
