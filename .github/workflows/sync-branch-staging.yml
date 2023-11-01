@@ -44,7 +44,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: major/${{ needs.get_next_version_tag.outputs.next_major_version }}
+          ref: ${{ env.STAGING_BRANCH_1 }}
           # REQUIRED if your upstream repo is private (see wiki)
           persist-credentials: false
           
@@ -62,7 +62,7 @@ jobs:
           upstream_repo_access_token: ${{ secrets.GITHUB_TOKEN }}
 
           # Set test_mode true to run tests instead of the true action!!
-          test_mode: false
+          test_mode: true
 
       # Step 3: Display a sample message based on the sync output var 'has_new_commits'
       - name: New commits found
