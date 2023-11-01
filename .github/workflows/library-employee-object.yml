@@ -43,20 +43,23 @@ jobs:
             const event = ${{ toJSON(github.event) }};
             const commitList = [];
             commitList.push("# Commit List");
-            commitList.push("\n ");
+            commitList.push("  \n  \n  \n");
             for (const commit of event.commits) {
-              const content = ["-" + commit.timestamp,
-                                "-" + commit.committer.username,
-                                "-" + commit.message,
-                                "-" + commit.url
+              const content = ["**" + commit.timestamp + "**",
+                                "**" + commit.committer.username + "**",
+                                commit.message,
+                                commit.url
               ].join("\n");
             
               commitList.push(content);
-              
-              commitList.push("- --- ");
-              commitList.push("----- ");
+            
             }
-            return commitList.join("\n \n ");
+            
+            const joinStr = commitList.join("  \n  \n  \n");
+            
+            console.log(joinStr);
+            
+            return joinStr;
 
       - name: Logging
         run: |
