@@ -34,8 +34,6 @@ jobs:
       - name: Check my source
         run: pwd && ls -al
 
-
-
       - name: Commits parsing
         uses: actions/github-script@v6
         id: commit_list
