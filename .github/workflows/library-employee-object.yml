@@ -56,7 +56,9 @@ jobs:
             
             const joinStr = commitList.join(`
             \n ₩n₩n
-            \n \n
+            \n    \n
+            \n '   ' \n
+            \n '   ' \n\n\n\n\n\n\n\n\n\n\n\n\n
             \n **
             \n ## 
             \n #### 
