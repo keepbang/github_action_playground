@@ -49,9 +49,7 @@ jobs:
                                 commit.message,
                                 commit.url
               ].join("\n");
-            
               commitList.push(content);
-            
             }
             
             const joinStr = commitList.join(`
