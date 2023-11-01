@@ -69,7 +69,7 @@ jobs:
               ].join('\n');
               commitList.push(content);
             }
-            return commitList.join('\n\n');
+            return commitList.join('<hr/><br/><br/>');
 
       - name: Logging
         run: |
