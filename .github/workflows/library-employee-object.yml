@@ -41,6 +41,9 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew ${{ env.MODULE_NAME }}:build
 
+      - name: Nexus Repo Publish
+        run: ./gradlew ${{ env.MODULE_NAME }}:publish -DVERSION=${{ needs.tagging.outputs.new_version }}
+
       - name: Bump version and push tag
         id: tag_version
         uses: anothrNick/github-tag-action@1.67.0
@@ -63,8 +66,12 @@ jobs:
       - name: Nexus Repo Publish
         run: ./gradlew ${{ env.MODULE_NAME }}:publish -DVERSION=${{ steps.alpha_version.outputs.VERSION }}
 
-      - name: Build Changelog
-        id: github_release
-        uses: mikepenz/release-changelog-builder-action@v4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # 라이브러리 노션 데이터베이스에 추가
+      - name: Notion release notes ${{ env.MODULE_NAME }} library
+        uses: infinitaslearning/notion-release-notes@main
+        with:
+          token: ${{ secrets.NOTION_TOKEN }}
+          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
+          name: ${{ env.LIBRARY_NAME }}-${{ steps.alpha_version.outputs.VERSION }}
+          tags: ${{ steps.alpha_version.outputs.VERSION }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME }}
+          body: ${{ github.event.head_commit.message }}
