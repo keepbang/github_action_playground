@@ -42,7 +42,7 @@ jobs:
           script: |
             const event = ${{ toJSON(github.event) }};
             const commitList = [];
-            commitList.push("# Commit List\n");
+            commitList.push("# Commit List \n");
             for (const commit of event.commits) {
               const content = [commit.timestamp,
                                 commit.committer.username,
@@ -52,10 +52,10 @@ jobs:
               
               commitList.push(content);
               
-              commitList.push("---");
-              commitList.push("-----");
+              commitList.push(" ---");
+              commitList.push(" -----");
             }
-            return commitList.join("  \n  \n  \n");
+            return commitList.join(" \n \n \n");
 
       - name: Logging
         run: |
