@@ -109,12 +109,12 @@ jobs:
 #      - name: Nexus Repo Publish
 #        run: ./gradlew ${{ env.MODULE_NAME }}:publish -DVERSION=${{ steps.alpha_version.outputs.VERSION }}
 #
-#      # 라이브러리 노션 데이터베이스에 추가
-#      - name: Notion release notes ${{ env.MODULE_NAME }} library
-#        uses: infinitaslearning/notion-release-notes@main
-#        with:
-#          token: ${{ secrets.NOTION_TOKEN }}
-#          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
-#          name: ${{ env.LIBRARY_NAME }}-${{ steps.alpha_version.outputs.VERSION }}
-#          tags: ${{ steps.alpha_version.outputs.VERSION }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME }}
-#          body: ${{ github.event.commits }}
+      # 라이브러리 노션 데이터베이스에 추가
+      - name: Notion release notes ${{ env.MODULE_NAME }} library
+        uses: infinitaslearning/notion-release-notes@main
+        with:
+          token: ${{ secrets.NOTION_TOKEN }}
+          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
+          name: ${{ env.LIBRARY_NAME }}-test.1
+          tags: test.1, ${{ github.event.repository.name }}:${{ env.MODULE_NAME }}
+          body: ${{ steps.commit_list.outputs.result }}
