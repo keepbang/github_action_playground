@@ -1,4 +1,4 @@
-name: Sync major branch.
+name: Sync staging branch.
 
 on:
 #   schedule:
