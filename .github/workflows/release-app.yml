@@ -137,6 +137,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          ref: minor/1.9.0
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -146,9 +148,6 @@ jobs:
 
       - name: Check my source
         run: pwd && ls -al
-
-      - name: Check branch
-        run: git branch -a | grep minor/1.9.0
 
       - name: Set variables
         id: branch_variables
