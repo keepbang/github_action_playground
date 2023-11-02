@@ -1,0 +1,55 @@
+{
+  "categories": [
+    {
+      "title": "## 이슈 해결 🛠",
+      "labels": ["resolved"]
+    },
+    {
+      "title": "## 버그 수정 🐞",
+      "labels": ["bug"]
+    },
+    {
+      "title": "## 기능 추가 및 개선 🎉",
+      "labels": ["enhancement"]
+    },
+    {
+      "title": "## 릴리즈 (Major) 📢",
+      "labels": ["release/major"]
+    },
+    {
+      "title": "## 릴리즈 (Minor) 📢",
+      "labels": ["release/minor"]
+    },
+    {
+      "title": "## 릴리즈 (Patch) 📢",
+      "labels": ["release/patch"]
+    },
+    {
+      "title": "## 릴리즈 🧪",
+      "labels": ["*"]
+    }
+  ],
+  "ignore_labels": [
+    "ignore"
+  ],
+  "sort": {
+    "order": "ASC",
+    "on_property": "mergedAt"
+  },
+  "template": "#{{CHANGELOG}}\n\n<details>\n<summary> 📦 Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
+  "pr_template": "- #{{TITLE}}\n   - PR: ##{{URL}}",
+  "empty_template": "- no changes",
+  "label_extractor": [],
+  "reference": {},
+  "transformers": [],
+  "trim_values": false,
+  "max_tags_to_fetch": 200,
+  "max_pull_requests": 200,
+  "max_back_track_time_days": 365,
+  "exclude_merge_branches": [],
+  "tag_resolver": {
+    "method": "semver",
+    "filter": {}
+  },
+  "base_branches": []
+}

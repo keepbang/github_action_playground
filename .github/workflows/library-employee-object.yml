@@ -38,18 +38,22 @@ jobs:
       - name: Build Changelog
         id: build_changelog
         uses: mikepenz/release-changelog-builder-action@v4
+        with:
+          configuration: ".github/configuration.json"
+          configurationJson: |
+            {
+              "base_branches" : ["library-employee-object"]
+            }
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Commits parsing
-        uses: actions/github-script@v6
-        id: commit_list
-        with:
-          result-encoding: string
-          script: |
-            const event = ${{ toJSON(steps.build_changelog.outputs) }};
-            
-            
+#      - name: Commits parsing
+#        uses: actions/github-script@v6
+#        id: commit_list
+#        with:
+#          result-encoding: string
+#          script: |
+#            const event = ${{ toJSON(github.event) }};
 #            const commitList = [];
 #            commitList.push("# Commit List \n ");
 #            for (const commit of event.commits) {
@@ -65,7 +69,7 @@ jobs:
 #            \n ###    ---
 #            `);
 #
-#            return joinStr;가
+#            return joinStr;
 
 #      - name: Init gradle
 #        run: |
@@ -73,10 +77,10 @@ jobs:
 #          chmod +x ./gradle-init_obf.sh
 #          ./gradle-init_obf.sh
 #        shell: bash
-#
+
 #      - name: Build with Gradle
 #        run: ./gradlew ${{ env.MODULE_NAME }}:build
-#
+
 #      - name: Bump version and push tag
 #        id: tag_version
 #        uses: anothrNick/github-tag-action@1.67.0
@@ -101,12 +105,11 @@ jobs:
 
 
       # 라이브러리 노션 데이터베이스에 추가
-
-#      - name: Notion release notes ${{ env.MODULE_NAME }} library
-#        uses: infinitaslearning/notion-release-notes@v0.6
-#        with:
-#          token: ${{ secrets.NOTION_TOKEN }}
-#          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
-#          name: ${{ env.LIBRARY_NAME }}-${{ steps.alpha_version.outputs.VERSION }}
-#          tags: ${{ steps.alpha_version.outputs.VERSION }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME }}
-#          body: ${{ steps.commit_list.outputs.result }}
+      - name: Notion release notes ${{ env.MODULE_NAME }} library
+        uses: infinitaslearning/notion-release-notes@v0.6
+        with:
+          token: ${{ secrets.NOTION_TOKEN }}
+          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
+          name: ${{ env.LIBRARY_NAME }}-test.2
+          tags: test.2, ${{ github.event.repository.name }}:${{ env.MODULE_NAME }}
+          body: ${{steps.build_changelog.outputs.changelog}}

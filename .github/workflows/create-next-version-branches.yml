@@ -1,63 +1,66 @@
-name: Create next major and minor version branches.
+name: Create next major and minor version branches
 
 on:
-  workflow_dispatch:  # click the button on Github repo!
+  workflow_call:
+    inputs:
+      next_major_version:
+        required: true
+        type: string
+      next_minor_version:
+        required: true
+        type: string
+      part:
+        required: true
+        type: string
+    outputs:
+      major_created:
+        value: ${{ jobs.create_next_major_branch.outputs.created }}
+      minor_created:
+        value: ${{ jobs.create_next_minor_branch.outputs.created }}
+      next_major_version:
+        value: ${{ jobs.create_next_major_branch.outputs.next_version }}
+      next_minor_version:
+        value: ${{ jobs.create_next_minor_branch.outputs.next_version }}
 
 jobs:
-  get_next_version_tag:
-    name: Get next version tag
+  create_next_major_branch:
+    name: Create next major branch
+    if: ${{ inputs.part != 'patch' }}
     runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          
-      - name: Get Previous tag
-        id: previous_tag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Get next version
-        id: next_version
-        uses: "WyriHaximus/github-action-next-semvers@v1"
-        with:
-          version: ${{ steps.previous_tag.outputs.tag }}
     outputs:
-      next_major_version: ${{ steps.next_version.outputs.major }}
-      next_minor_version: ${{ steps.next_version.outputs.minor }}
-
-  create_next_minor-branch:
-    runs-on: ubuntu-20.04
-    needs: [get_next_version_tag]
-    name: Create next minor branch
-    steps:        
+      created: ${{ steps.create_branch.outputs.created }}
+      next_version: ${{ inputs.next_major_version }}
+    steps:
       - name: Create branch
         id: create_branch
         uses: peterjgrainger/action-create-branch@v2.2.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: 'minor/${{ needs.get_next_version_tag.outputs.next_minor_version }}'
+          branch: 'major/${{ inputs.next_major_version }}'
           # sha: '${{ github.event.pull_request.head.sha }}'
 
-      - run: |
+      - name: Print result
+        run: |
           echo ${{ steps.create_branch.outputs.created }}
 
-  create_next_major-branch:
+  create_next_minor_branch:
+    name: Create next minor branch
+    if: ${{ inputs.part != 'patch' }}
     runs-on: ubuntu-20.04
-    needs: [get_next_version_tag]
-    name: Create next major branch
-    steps:        
+    outputs:
+      created: ${{ steps.create_branch.outputs.created }}
+      next_version: ${{ inputs.next_minor_version }}
+    steps:
       - name: Create branch
         id: create_branch
         uses: peterjgrainger/action-create-branch@v2.2.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: 'major/${{ needs.get_next_version_tag.outputs.next_major_version }}'
+          branch: 'minor/${{ inputs.next_minor_version }}'
           # sha: '${{ github.event.pull_request.head.sha }}'
 
-      - run: |
+      - name: Print result
+        run: |
           echo ${{ steps.create_branch.outputs.created }}
