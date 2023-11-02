@@ -1,0 +1,18 @@
+name: Sync staging branch.
+
+on:
+  workflow_dispatch:  # click the button on Github repo!
+
+jobs:
+  test_print:
+    name: test print
+    runs-on: ubuntu-20.04
+    steps:
+      - name: print NOTION_RELEASE_NOTE_DATABASE
+        run: |
+          echo ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
+
+      - name: print NOTION_TOKEN
+        run: |
+          echo ${{ secrets.NOTION_TOKEN }}        
+
