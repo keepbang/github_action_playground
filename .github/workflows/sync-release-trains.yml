@@ -10,6 +10,9 @@ on:
         required: true
         type: string
 
+env:
+  UPSTREAM_BRANCH: main
+
 jobs:
   sync_repo:
     name: Sync latest commits from upstream repo
