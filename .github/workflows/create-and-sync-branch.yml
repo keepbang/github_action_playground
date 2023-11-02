@@ -59,13 +59,13 @@ jobs:
     uses: ./.github/workflows/sync-release-trains.yml
     with:
       target_part: major
-      next_version: ${{ inputs.next_version }}
+      next_version: ${{ needs.create-next-version.outputs.next_major_version }}
 
   sync-minor-branch:
     needs: [create_next_minor_branch]
     uses: ./.github/workflows/sync-release-trains.yml
     with:
       target_part: minor
-      next_version: ${{ inputs.next_version }}
+      next_version: ${{ needs.create-next-version.outputs.next_minor_version }}
 
 

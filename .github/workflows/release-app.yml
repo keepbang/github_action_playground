@@ -60,18 +60,23 @@ jobs:
       next_version: ${{ needs.application-deploy.outputs.new_version }}
 
   # patch일 경우 branch 생성을 건너 뛰고 싱크.
+  create-next-version:
+    name: Create next version
+    needs: [ application-deploy ]
+    uses: ./.github/workflows/create-next-semver.yml
+
   sync-major-branch:
     if: ${{ needs.application-deploy.outputs.part == 'patch' }}
-    needs: [ application-deploy ]
+    needs: [ create-next-version ]
     uses: ./.github/workflows/sync-release-trains.yml
     with:
       target_part: major
-      next_version: ${{ needs.application-deploy.outputs.new_version }}
+      next_version: ${{ needs.create-next-version.outputs.next_major_version }}
 
   sync-minor-branch:
     if: ${{ needs.application-deploy.outputs.part == 'patch' }}
-    needs: [ application-deploy ]
+    needs: [ create-next-version ]
     uses: ./.github/workflows/sync-release-trains.yml
     with:
       target_part: minor
-      next_version: ${{ needs.application-deploy.outputs.new_version }}
+      next_version: ${{ needs.create-next-version.outputs.next_minor_version }}
