@@ -23,7 +23,7 @@ jobs:
 
   branch-release:
     name: released branch rename
-    needs: [tagging, application-deploy]
+    needs: [application-deploy]
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
@@ -37,8 +37,8 @@ jobs:
       - name: Set variables
         id: branch_variables
         run: |
-          old_branch="${{ needs.tagging.outputs.part }}/${{ needs.tagging.outputs.tag }}"
-          new_branch="${{ needs.tagging.outputs.part }}/${{ needs.tagging.outputs.tag }}-released"
+          old_branch="${{ needs.application-deploy.outputs.part }}/${{ needs.application-deploy.outputs.tag }}"
+          new_branch="${{ needs.application-deploy.outputs.part }}/${{ needs.application-deploy.outputs.tag }}-released"
           echo "OLD_BRANCH=$old_branch" >> $GITHUB_OUTPUT
           echo "NEW_BRANCH=$new_branch" >> $GITHUB_OUTPUT
 
@@ -48,4 +48,4 @@ jobs:
           # Rename branch
           # git push <remote> <remote>/<old_name>:refs/heads/<new_name> :<old_name>
           git push origin origin/${{ steps.branch_variables.outputs.OLD_BRANCH }}:refs/heads/${{ steps.branch_variables.outputs.NEW_BRANCH }} :${{ steps.branch_variables.outputs.OLD_BRANCH }}
-        if: ${{ needs.tagging.outputs.part != 'patch' }}
+        if: ${{ needs.application-deploy.outputs.part != 'patch' }}
