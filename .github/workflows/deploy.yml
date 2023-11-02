@@ -54,6 +54,7 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew ${{ env.MODULE_NAME_1 }}:build
+
       - name: Build with Gradle
         run: ./gradlew ${{ env.MODULE_NAME_2 }}:build
 
@@ -79,7 +80,7 @@ jobs:
 
 #      # 어플리케이션 1 노션 데이터베이스에 추가
 #      - name: Notion release notes ${{ env.MODULE_NAME_1 }} application
-#        uses: infinitaslearning/notion-release-notes@main
+#        uses: infinitaslearning/notion-release-notes@v0.6
 #        with:
 #          token: ${{ secrets.NOTION_TOKEN }}
 #          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
@@ -89,7 +90,7 @@ jobs:
 #
 #      # 어플리케이션 2 노션 데이터베이스에 추가
 #      - name: Notion release notes ${{ env.MODULE_NAME_2 }} application
-#        uses: infinitaslearning/notion-release-notes@main
+#        uses: infinitaslearning/notion-release-notes@v0.6
 #        with:
 #          token: ${{ secrets.NOTION_TOKEN }}
 #          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
@@ -99,7 +100,7 @@ jobs:
 #
 #      # 라이브러리 1 노션 데이터베이스에 추가
 #      - name: Notion release notes ${{ env.MODULE_NAME_3 }} library
-#        uses: infinitaslearning/notion-release-notes@main
+#        uses: infinitaslearning/notion-release-notes@v0.6
 #        with:
 #          token: ${{ secrets.NOTION_TOKEN }}
 #          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
