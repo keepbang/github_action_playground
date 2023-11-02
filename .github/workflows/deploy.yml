@@ -46,9 +46,12 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew ${{ env.MODULE_NAME_1 }}:build
-
       - name: Build with Gradle
         run: ./gradlew ${{ env.MODULE_NAME_2 }}:build
+
+      # test run
+      - run: |
+          echo {{ needs.tagging.outputs.new_version }}
 
       - name: Nexus Repo Publish
         run: ./gradlew ${{ env.MODULE_NAME_3 }}:publish -DVERSION=${{ needs.tagging.outputs.new_version }}
