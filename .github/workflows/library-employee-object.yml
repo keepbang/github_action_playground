@@ -18,7 +18,6 @@ env:
 
 jobs:
   build:
-    name: "LOG Everything on GitHub Event"
     runs-on: ubuntu-20.04
     steps:
 
@@ -92,7 +91,7 @@ jobs:
 
 
       # 라이브러리 노션 데이터베이스에 추가
-      - uses: ./.github/workflows/notion-release-note.yml
+      - uses: /.github/workflows/notion-release-note.yml
         with:
           APP_NAME: ${{ env.LIBRARY_NAME }}
           VERSION: ${{ steps.alpha_version.outputs.VERSION }}
