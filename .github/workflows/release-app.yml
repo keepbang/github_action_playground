@@ -18,8 +18,9 @@ jobs:
   application-deploy:
     uses: ./.github/workflows/deploy.yml
 
-  branch-release:
-    name: released branch rename
+  rename-released-branch:
+    name: Rename released branch
+    if: ${{ needs.application-deploy.outputs.part != 'patch' }}
     needs: [application-deploy]
     runs-on: ubuntu-20.04
     steps:
@@ -39,16 +40,17 @@ jobs:
           echo "OLD_BRANCH=$old_branch" >> $GITHUB_OUTPUT
           echo "NEW_BRANCH=$new_branch" >> $GITHUB_OUTPUT
 
-      - name: Rename released branch
+      - name: Rename branch
         id: rename_branch
         run: |
           # Rename branch
           # git push <remote> <remote>/<old_name>:refs/heads/<new_name> :<old_name>
           git push origin origin/${{ steps.branch_variables.outputs.OLD_BRANCH }}:refs/heads/${{ steps.branch_variables.outputs.NEW_BRANCH }} :${{ steps.branch_variables.outputs.OLD_BRANCH }}
-        if: ${{ needs.application-deploy.outputs.part != 'patch' }}
+
 
   create-next-version:
     uses: ./.github/workflows/create-next-semver.yml
+
 
   # name: Create next major and minor version branches.
   create_next_minor-branch:
