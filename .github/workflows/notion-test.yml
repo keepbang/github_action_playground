@@ -1,4 +1,4 @@
-name: Sync staging branch.
+name: notion test
 
 on:
   workflow_dispatch:  # click the button on Github repo!
