@@ -15,9 +15,6 @@ env:
   LIBRARY_NAME: employee-object
 
 jobs:
-  tagging:
-    uses: ./.github/workflows/bump-version-tag.yml
-
   application-deploy:
     uses: ./.github/workflows/deploy.yml
 
