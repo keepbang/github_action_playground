@@ -1,6 +1,11 @@
 name: Bump version tag
 
-on: workflow_call
+on:
+  workflow_call:
+    outputs:
+      new_version: ${{ jobs.tagging.outputs.new_version }}
+      tag: ${{ jobs.tagging.outputs.tag }}
+      part: ${{ jobs.tagging.outputs.part }}
 
 jobs:
   tagging:
