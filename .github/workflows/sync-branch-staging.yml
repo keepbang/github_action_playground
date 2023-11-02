@@ -1,3 +1,5 @@
+# TODO: 각 스테이징을 major, minor로 분리??
+
 name: Sync staging branch.
 
 on:
