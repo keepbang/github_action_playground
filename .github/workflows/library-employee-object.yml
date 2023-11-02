@@ -47,7 +47,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const event = ${{ steps.build_changelog.outputs }};
+            const event = ${{ toJSON(steps.build_changelog.outputs) }};
             
             
 #            const commitList = [];
