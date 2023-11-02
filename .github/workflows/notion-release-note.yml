@@ -1,0 +1,30 @@
+name: Notion Release Note
+
+on:
+  workflow_call:
+    inputs:
+      APP_NAME:
+        type: string
+        required: true
+      VERSION:
+        type: string
+        required: true
+      MODULE_NAME:
+        type: string
+        required: true
+      BODY:
+        type: string
+        required: true
+
+jobs:
+  notion-release-note:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Notion release notes ${{ inputs.MODULE_NAME }}
+        uses: infinitaslearning/notion-release-notes@v0.6
+        with:
+          token: ${{ secrets.NOTION_TOKEN }}
+          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
+          name: ${{ inputs.APP_NAME }}-${{ inputs.VERSION }}
+          tags: ${{ inputs.VERSION }}, ${{ github.event.repository.name }}:${{ input.MODULE_NAME }}
+          body: ${{ inputs.BODY }}

@@ -93,10 +93,9 @@ jobs:
 
       # 라이브러리 노션 데이터베이스에 추가
       - name: Notion release notes ${{ env.MODULE_NAME }} library
-        uses: infinitaslearning/notion-release-notes@v0.6
+        uses: ./.github/workflows/notion-release-note.yml
         with:
-          token: ${{ secrets.NOTION_TOKEN }}
-          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
-          name: ${{ env.LIBRARY_NAME }}-${{ steps.alpha_version.outputs.VERSION }}
-          tags: ${{ steps.alpha_version.outputs.VERSION }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME }}
-          body: ${{ steps.commit_list.outputs.result }}
+          APP_NAME: ${{ env.LIBRARY_NAME }}
+          VERSION: ${{ steps.alpha_version.outputs.VERSION }}
+          MODULE_NAME: ${{ env.MODULE_NAME }}
+          BODY: ${{ steps.commit_list.outputs.result }}
