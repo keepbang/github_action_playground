@@ -110,4 +110,3 @@ jobs:
           name: ${{ env.LIBRARY_NAME }}-${{ needs.tagging.outputs.new_version }}
           tags: ${{ needs.tagging.outputs.new_version }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME_3 }}
           body: ${{ steps.build_changelog.outputs.changelog }}
-
