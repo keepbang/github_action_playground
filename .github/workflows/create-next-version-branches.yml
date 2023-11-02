@@ -3,6 +3,12 @@ name: Create next major and minor version branches
 on:
   workflow_call:
     inputs:
+      next_major_version:
+        required: true
+        type: string
+      next_minor_version:
+        required: true
+        type: string
       part:
         required: true
         type: string
@@ -17,18 +23,13 @@ on:
         value: ${{ jobs.create_next_minor_branch.outputs.next_version }}
 
 jobs:
-  create-next-version:
-    name: Create next version
-    uses: ./.github/workflows/create-next-semver.yml
-
   create_next_major_branch:
     name: Create next major branch
     if: ${{ inputs.part != 'patch' }}
-    needs: [ create-next-version ]
     runs-on: ubuntu-20.04
     outputs:
       created: ${{ steps.create_branch.outputs.created }}
-      next_version: ${{ needs.create-next-version.outputs.next_major_version }}
+      next_version: ${{ inputs.next_major_version }}
     steps:
       - name: Create branch
         id: create_branch
@@ -36,7 +37,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: 'major/${{ needs.create-next-version.outputs.next_major_version }}'
+          branch: 'major/${{ inputs.next_major_version }}'
           # sha: '${{ github.event.pull_request.head.sha }}'
 
       - name: Print result
@@ -46,11 +47,10 @@ jobs:
   create_next_minor_branch:
     name: Create next minor branch
     if: ${{ inputs.part != 'patch' }}
-    needs: [ create-next-version ]
     runs-on: ubuntu-20.04
     outputs:
       created: ${{ steps.create_branch.outputs.created }}
-      next_version: ${{ needs.create-next-version.outputs.next_minor_version }}
+      next_version: ${{ inputs.next_minor_version }}
     steps:
       - name: Create branch
         id: create_branch
@@ -58,7 +58,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: 'minor/${{ needs.create-next-version.outputs.next_minor_version }}'
+          branch: 'minor/${{ inputs.next_minor_version }}'
           # sha: '${{ github.event.pull_request.head.sha }}'
 
       - name: Print result
