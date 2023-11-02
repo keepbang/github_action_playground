@@ -14,15 +14,16 @@ jobs:
   tagging:
     uses: ./.github/workflows/bump-version-tag.yml
 
+  application-deploy:
+    name: application deploy
+    needs: [ tagging ]
+    runs-on: ubuntu-20.04
+
     outputs:
       new_version: ${{ needs.tagging.outputs.new_version }}
       tag: ${{ needs.tagging.outputs.tag }}
       part: ${{ needs.tagging.outputs.part }}
 
-  application-deploy:
-    name: application deploy
-    needs: [ tagging ]
-    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
