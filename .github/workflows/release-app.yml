@@ -23,6 +23,8 @@ jobs:
     if: ${{ needs.application-deploy.outputs.part != 'patch' }}
     needs: [application-deploy]
     runs-on: ubuntu-20.04
+    outputs:
+      part: ${{ needs.application-deploy.outputs.part }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -47,48 +49,99 @@ jobs:
           # git push <remote> <remote>/<old_name>:refs/heads/<new_name> :<old_name>
           git push origin origin/${{ steps.branch_variables.outputs.OLD_BRANCH }}:refs/heads/${{ steps.branch_variables.outputs.NEW_BRANCH }} :${{ steps.branch_variables.outputs.OLD_BRANCH }}
 
-
   create-next-version:
-    needs: [rename-released-branch]
+    name: Create next version
+    needs: [application-deploy]
     uses: ./.github/workflows/create-next-semver.yml
 
+  create-next-version-branches:
+    needs: [create-next-version, rename-released-branch]
+    uses: ./.github/workflows/create-next-version-branches.yml
+    with:
+      next_major_version: ${{ needs.create-next-version.outputs.next_major_version }}
+      next_minor_version: ${{ needs.create-next-version.outputs.next_minor_version }}
+      part: ${{ needs.rename-released-branch.outputs.part }}
 
-  # name: Create next major and minor version branches.
-  create_next_minor-branch:
-    name: Create next minor branch
-    if: ${{ needs.application-deploy.outputs.part != 'patch' }}
-    needs: [create-next-version]
+  sync_major_train:
+    if: ${{ needs.create-next-version-branches.outputs.major_created }}
     runs-on: ubuntu-20.04
+    name: Sync latest commits from upstream repo
+    needs: [create-next-version, create-next-version-branches]
     steps:
-      - name: Create branch
-        id: create_branch
-        uses: peterjgrainger/action-create-branch@v2.2.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # REQUIRED step
+      # Step 1: run a standard checkout action, provided by github
+      - name: Checkout target repo
+        uses: actions/checkout@v3
         with:
-          branch: 'minor/${{ needs.create-next-version.outputs.next_minor_version }}'
-          # sha: '${{ github.event.pull_request.head.sha }}'
+          # optional: set the branch to checkout,
+          # sync action checks out your 'target_sync_branch' anyway
+          ref: major/${{ needs.create-next-version-branches.outputs.next_minor_version }}
+          # REQUIRED if your upstream repo is private (see wiki)
+          persist-credentials: false
 
-      - name: Print result
-        run: |
-          echo ${{ steps.create_branch.outputs.created }}
+      # REQUIRED step
+      # Step 2: run the sync action
+      - name: Sync upstream changes
+        id: sync
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
+        with:
+          target_sync_branch: major/${{ needs.create-next-version-branches.outputs.next_major_version }}
+          # REQUIRED 'target_repo_token' exactly like this!
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+          upstream_sync_branch: ${{ env.UPSTREAM_BRANCH }}
+          upstream_sync_repo: mcorporation-dev/${{ github.event.repository.name }}
+          upstream_repo_access_token: ${{ secrets.GITHUB_TOKEN }}
 
-  create_next_major-branch:
-    name: Create next major branch
-    if: ${{ needs.application-deploy.outputs.part != 'patch' }}
-    needs: [create-next-version]
+          # Set test_mode true to run tests instead of the true action!!
+          test_mode: false
+
+      # Step 3: Display a sample message based on the sync output var 'has_new_commits'
+      - name: New commits found
+        if: steps.sync.outputs.has_new_commits == 'true'
+        run: echo "New commits were found to sync."
+
+      - name: No new commits
+        if: steps.sync.outputs.has_new_commits == 'false'
+        run: echo "There were no new commits."
+
+  sync_minor_train:
+    if: ${{ needs.create-next-version-branches.outputs.major_created }}
     runs-on: ubuntu-20.04
+    name: Sync latest commits from upstream repo
+    needs: [create-next-version, create-next-version-branches]
     steps:
-      - name: Create branch
-        id: create_branch
-        uses: peterjgrainger/action-create-branch@v2.2.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # REQUIRED step
+      # Step 1: run a standard checkout action, provided by github
+      - name: Checkout target repo
+        uses: actions/checkout@v3
         with:
-          branch: 'major/${{ needs.create-next-version.outputs.next_major_version }}'
-          # sha: '${{ github.event.pull_request.head.sha }}'
+          # optional: set the branch to checkout,
+          # sync action checks out your 'target_sync_branch' anyway
+          ref: minor/${{ needs.create-next-version-branches.outputs.next_minor_version }}
+          # REQUIRED if your upstream repo is private (see wiki)
+          persist-credentials: false
 
-      - name: Print result
-        run: |
-          echo ${{ steps.create_branch.outputs.created }}
+      # REQUIRED step
+      # Step 2: run the sync action
+      - name: Sync upstream changes
+        id: sync
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
+        with:
+          target_sync_branch: minor/${{ needs.create-next-version-branches.outputs.next_minor_version }}
+          # REQUIRED 'target_repo_token' exactly like this!
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+          upstream_sync_branch: ${{ env.UPSTREAM_BRANCH }}
+          upstream_sync_repo: mcorporation-dev/${{ github.event.repository.name }}
+          upstream_repo_access_token: ${{ secrets.GITHUB_TOKEN }}
 
+          # Set test_mode true to run tests instead of the true action!!
+          test_mode: false
+
+      # Step 3: Display a sample message based on the sync output var 'has_new_commits'
+      - name: New commits found
+        if: steps.sync.outputs.has_new_commits == 'true'
+        run: echo "New commits were found to sync."
+
+      - name: No new commits
+        if: steps.sync.outputs.has_new_commits == 'false'
+        run: echo "There were no new commits."
