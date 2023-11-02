@@ -8,13 +8,8 @@
 
 name: Library alpha build.
 
-#on:
-#  push:
-#    branches: [ "library-employee-object" ]
 on:
-  pull_request:
-    types:
-      - closed
+  push:
     branches: [ "library-employee-object" ]
 
 env:
