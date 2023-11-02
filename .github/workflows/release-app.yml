@@ -63,7 +63,6 @@ jobs:
       part: ${{ needs.rename-released-branch.outputs.part }}
 
   sync_major_train:
-    if: ${{ needs.create-next-version-branches.outputs.major_created }}
     runs-on: ubuntu-20.04
     name: Sync major train from upstream repo
     needs: [create-next-version, create-next-version-branches]
@@ -105,7 +104,6 @@ jobs:
         run: echo "There were no new commits."
 
   sync_minor_train:
-    if: ${{ needs.create-next-version-branches.outputs.minor_created }}
     runs-on: ubuntu-20.04
     name: Sync minor train from upstream repo
     needs: [create-next-version, create-next-version-branches]
