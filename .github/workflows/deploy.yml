@@ -26,7 +26,8 @@ jobs:
 
     steps:
       # test run
-      - run: |
+      - name: Test run
+        run: |
           echo "{{ needs.tagging.outputs.new_version }}"        
           echo "{{ needs.tagging.outputs.tag }}"        
           echo "{{ needs.tagging.outputs.part }}"        
