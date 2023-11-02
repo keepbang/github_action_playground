@@ -1,0 +1,94 @@
+name: Deploy
+
+on: workflow_call
+
+env:
+  MODULE_NAME_1: app:grassland
+  APPLICATION_NAME_1: mco-playground-grassland
+  MODULE_NAME_2: app:zoo
+  APPLICATION_NAME_2: mco-playground-zoo
+  MODULE_NAME_3: aid:employee
+  LIBRARY_NAME: employee-object
+
+jobs:
+  tagging:
+    uses: ./.github/workflows/refactored/bump-version-tag.yml
+
+  application-deploy:
+    name: application deploy
+    needs: [ tagging ]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Check my source
+        run: pwd && ls -al
+
+      - name: Init gradle
+        run: |
+          mkdir -p ~/.gradle/
+          chmod +x ./gradle-init_obf.sh
+          ./gradle-init_obf.sh
+        shell: bash
+
+      - name: Build with Gradle
+        run: ./gradlew ${{ env.MODULE_NAME_1 }}:build
+
+      - name: Build with Gradle
+        run: ./gradlew ${{ env.MODULE_NAME_2 }}:build
+
+      - name: Nexus Repo Publish
+        run: ./gradlew ${{ env.MODULE_NAME_3 }}:publish -DVERSION=${{ needs.tagging.outputs.new_version }}
+
+      - name: Build Changelog
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create a GitHub release
+        id: github_release
+        uses: ncipollo/release-action@v1
+        with:
+          #          skipIfReleaseExists: true
+          tag: ${{ needs.tagging.outputs.new_version }}
+          name: Release ${{ needs.tagging.outputs.new_version }}
+          body: |
+            ${{steps.build_changelog.outputs.changelog}}
+
+      # 어플리케이션 1 노션 데이터베이스에 추가
+      - name: Notion release notes ${{ env.MODULE_NAME_1 }} application
+        uses: infinitaslearning/notion-release-notes@main
+        with:
+          token: ${{ secrets.NOTION_TOKEN }}
+          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
+          name: ${{ env.APPLICATION_NAME_1 }}-${{ needs.tagging.outputs.new_version }}
+          tags: ${{ needs.tagging.outputs.new_version }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME_1 }}
+          body: ${{ steps.build_changelog.outputs.changelog }}
+
+      # 어플리케이션 2 노션 데이터베이스에 추가
+      - name: Notion release notes ${{ env.MODULE_NAME_2 }} application
+        uses: infinitaslearning/notion-release-notes@main
+        with:
+          token: ${{ secrets.NOTION_TOKEN }}
+          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
+          name: ${{ env.APPLICATION_NAME_2 }}-${{ needs.tagging.outputs.new_version }}
+          tags: ${{ needs.tagging.outputs.new_version }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME_2 }}
+          body: ${{ steps.build_changelog.outputs.changelog }}
+
+      # 라이브러리 1 노션 데이터베이스에 추가
+      - name: Notion release notes ${{ env.MODULE_NAME_3 }} library
+        uses: infinitaslearning/notion-release-notes@main
+        with:
+          token: ${{ secrets.NOTION_TOKEN }}
+          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
+          name: ${{ env.LIBRARY_NAME }}-${{ needs.tagging.outputs.new_version }}
+          tags: ${{ needs.tagging.outputs.new_version }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME_3 }}
+          body: ${{ steps.build_changelog.outputs.changelog }}
