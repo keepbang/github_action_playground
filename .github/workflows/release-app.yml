@@ -49,6 +49,7 @@ jobs:
 
 
   create-next-version:
+    needs: [rename-released-branch]
     uses: ./.github/workflows/create-next-semver.yml
 
 
