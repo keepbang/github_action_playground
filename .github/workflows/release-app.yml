@@ -16,10 +16,10 @@ env:
 
 jobs:
   tagging:
-    uses: ./.github/workflows/refactored/bump-version-tag.yml
+    uses: ./.github/workflows/bump-version-tag.yml
 
   application-deploy:
-    uses: ./.github/workflows/refactored/deploy.yml
+    uses: ./.github/workflows/deploy.yml
 
   branch-release:
     name: released branch rename

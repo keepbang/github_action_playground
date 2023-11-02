@@ -12,7 +12,7 @@ env:
 
 jobs:
   tagging:
-    uses: ./.github/workflows/refactored/bump-version-tag.yml
+    uses: ./.github/workflows/bump-version-tag.yml
 
   application-deploy:
     name: application deploy
