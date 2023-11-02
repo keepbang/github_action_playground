@@ -1,0 +1,36 @@
+name: Create next semantic version
+
+on:
+  workflow_call:
+    outputs:
+      next_major_version:
+        value: ${{ jobs.get_next_version_tag.outputs.next_major_version }}
+      next_minor_version:
+        value: ${{ jobs.get_next_version_tag.outputs.next_minor_version }}
+
+jobs:
+  get_next_version_tag:
+    name: Get next version tag
+    runs-on: ubuntu-20.04
+
+    outputs:
+      next_major_version: ${{ steps.next_version.outputs.major }}
+      next_minor_version: ${{ steps.next_version.outputs.minor }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get Previous tag
+        id: previous_tag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get next version
+        id: next_version
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.previous_tag.outputs.tag }}
