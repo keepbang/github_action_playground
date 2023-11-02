@@ -69,7 +69,8 @@ jobs:
           branch: 'minor/${{ needs.create-next-version.outputs.next_minor_version }}'
           # sha: '${{ github.event.pull_request.head.sha }}'
 
-      - run: |
+      - name: Print result
+        run: |
           echo ${{ steps.create_branch.outputs.created }}
 
   create_next_major-branch:
@@ -87,6 +88,7 @@ jobs:
           branch: 'major/${{ needs.create-next-version.outputs.next_major_version }}'
           # sha: '${{ github.event.pull_request.head.sha }}'
 
-      - run: |
+      - name: Print result
+        run: |
           echo ${{ steps.create_branch.outputs.created }}
 
