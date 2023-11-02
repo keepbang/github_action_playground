@@ -1,6 +1,14 @@
 name: Deploy
 
-on: workflow_call
+on:
+  workflow_call:
+    outputs:
+      new_version:
+        value: ${{ jobs.application-deploy.outputs.new_version }}
+      tag:
+        value: ${{ jobs.application-deploy.outputs.tag }}
+      part:
+        value: ${{ jobs.application-deploy.outputs.part }}
 
 env:
   MODULE_NAME_1: app:grassland
@@ -25,14 +33,6 @@ jobs:
       part: ${{ needs.tagging.outputs.part }}
 
     steps:
-      # test run
-      - name: Test run
-        run: |
-          echo "{{ needs.tagging.outputs.new_version }}"        
-          echo "{{ needs.tagging.outputs.tag }}"        
-          echo "{{ needs.tagging.outputs.part }}"        
-        
-
       - name: Checkout
         uses: actions/checkout@v3
 
