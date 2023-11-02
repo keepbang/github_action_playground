@@ -9,7 +9,9 @@
 name: Library alpha build.
 
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches: [ "library-employee-object" ]
 
 env:
@@ -40,54 +42,56 @@ jobs:
           result-encoding: string
           script: |
             const event = ${{ toJSON(github.event) }};
-            const commitList = [];
-            commitList.push("# Commit List \n ");
-            for (const commit of event.commits) {
-              const content = ["**" + commit.timestamp + "**",
-                                "**" + commit.committer.username + "**",
-                                commit.message,
-                                commit.url
-              ].join("\n");
-              commitList.push(content);
-            }
             
-            const joinStr = commitList.join(`
-            \n ###    ---
-            `);
             
-            return joinStr;
+#            const commitList = [];
+#            commitList.push("# Commit List \n ");
+#            for (const commit of event.commits) {
+#              const content = ["**" + commit.timestamp + "**",
+#                                "**" + commit.committer.username + "**",
+#                                commit.message,
+#                                commit.url
+#              ].join("\n");
+#              commitList.push(content);
+#            }
+#
+#            const joinStr = commitList.join(`
+#            \n ###    ---
+#            `);
+#
+#            return joinStr;가
 
-      - name: Init gradle
-        run: |
-          mkdir -p ~/.gradle/
-          chmod +x ./gradle-init_obf.sh
-          ./gradle-init_obf.sh
-        shell: bash
-
-      - name: Build with Gradle
-        run: ./gradlew ${{ env.MODULE_NAME }}:build
-
-      - name: Bump version and push tag
-        id: tag_version
-        uses: anothrNick/github-tag-action@1.67.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: false
-          DEFAULT_BUMP: patch # pr 날릴때 major 추가해서 사용
-          PRERELEASE: true
-          PRERELEASE_SUFFIX: ${{ env.LIBRARY_NAME }}
-          DEFAULT_BRANCH: library-employee-object
-
-      # suffix 제거 스크립트
-      - name: library version extraction
-        id: alpha_version
-        run: |
-          echo "${{ steps.tag_version.outputs.new_tag }}" | sed 's/-${{ env.LIBRARY_NAME }}//' > alpha_version.txt
-          new_version=`cat alpha_version.txt`
-          echo "VERSION=$new_version" >> $GITHUB_OUTPUT
-
-      - name: Nexus Repo Publish
-        run: ./gradlew ${{ env.MODULE_NAME }}:publish -DVERSION=${{ steps.alpha_version.outputs.VERSION }}
+#      - name: Init gradle
+#        run: |
+#          mkdir -p ~/.gradle/
+#          chmod +x ./gradle-init_obf.sh
+#          ./gradle-init_obf.sh
+#        shell: bash
+#
+#      - name: Build with Gradle
+#        run: ./gradlew ${{ env.MODULE_NAME }}:build
+#
+#      - name: Bump version and push tag
+#        id: tag_version
+#        uses: anothrNick/github-tag-action@1.67.0
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          WITH_V: false
+#          DEFAULT_BUMP: patch # pr 날릴때 major 추가해서 사용
+#          PRERELEASE: true
+#          PRERELEASE_SUFFIX: ${{ env.LIBRARY_NAME }}
+#          DEFAULT_BRANCH: library-employee-object
+#
+#      # suffix 제거 스크립트
+#      - name: library version extraction
+#        id: alpha_version
+#        run: |
+#          echo "${{ steps.tag_version.outputs.new_tag }}" | sed 's/-${{ env.LIBRARY_NAME }}//' > alpha_version.txt
+#          new_version=`cat alpha_version.txt`
+#          echo "VERSION=$new_version" >> $GITHUB_OUTPUT
+#
+#      - name: Nexus Repo Publish
+#        run: ./gradlew ${{ env.MODULE_NAME }}:publish -DVERSION=${{ steps.alpha_version.outputs.VERSION }}
 
 
       # 라이브러리 노션 데이터베이스에 추가
