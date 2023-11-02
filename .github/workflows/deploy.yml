@@ -50,7 +50,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew ${{ env.MODULE_NAME_2 }}:build
 
-      # test
+      # test run
       - run: |
           echo {{ needs.tagging.outputs.new_version }}
 
