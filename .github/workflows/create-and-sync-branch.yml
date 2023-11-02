@@ -1,0 +1,71 @@
+name: Create and Sync branches
+
+on:
+  workflow_call:
+    inputs:
+      bumped_part:
+        required: true
+        type: string
+      next_version:
+        required: true
+        type: string
+
+jobs:
+  create-next-version:
+    name: Create next version
+    uses: ./.github/workflows/create-next-semver.yml
+
+  # create branch
+  create_next_major_branch:
+    name: Create next major branch
+    if: ${{ inputs.bumped_part != 'patch' }}
+    needs: [create-next-version]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Create branch
+        id: create_branch
+        uses: peterjgrainger/action-create-branch@v2.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: 'major/${{ needs.create-next-version.outputs.next_major_version }}'
+          # sha: '${{ github.event.pull_request.head.sha }}'
+
+      - name: Print result
+        run: |
+          echo ${{ steps.create_branch.outputs.created }}    
+
+  create_next_minor_branch:
+    name: Create next minor branch
+    if: ${{ inputs.bumped_part != 'patch' }}
+    needs: [create-next-version]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Create branch
+        id: create_branch
+        uses: peterjgrainger/action-create-branch@v2.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: 'minor/${{ needs.create-next-version.outputs.next_minor_version }}'
+          # sha: '${{ github.event.pull_request.head.sha }}'
+
+      - name: Print result
+        run: |
+          echo ${{ steps.create_branch.outputs.created }}  
+
+  sync-major-branch:
+    needs: [create_next_major_branch]
+    uses: ./.github/workflows/sync-release-trains.yml
+    with:
+      target_part: major
+      next_version: ${{ needs.create-next-version.outputs.next_major_version }}
+
+  sync-minor-branch:
+    needs: [create_next_minor_branch]
+    uses: ./.github/workflows/sync-release-trains.yml
+    with:
+      target_part: minor
+      next_version: ${{ needs.create-next-version.outputs.next_minor_version }}
+
+
