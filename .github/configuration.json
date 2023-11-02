@@ -25,8 +25,8 @@
       "labels": ["release/patch"]
     },
     {
-      "title": "## 릴리즈 🧪",
-      "labels": ["*"]
+      "title": "## 기타  🧪",
+      "labels": []
     }
   ],
   "ignore_labels": [
@@ -36,8 +36,8 @@
     "order": "ASC",
     "on_property": "mergedAt"
   },
-  "template": "#{{CHANGELOG}}\n\n<details>\n<summary> 📦 Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
-  "pr_template": "- #{{TITLE}}\n   - PR: ##{{URL}}",
+  "template": "#{{CHANGELOG}}",
+  "pr_template": "- #{{TITLE}}\n   - PR: [#{{NUMBER}}](#{{URL}})",
   "empty_template": "- no changes",
   "label_extractor": [],
   "reference": {},
@@ -48,8 +48,8 @@
   "max_back_track_time_days": 365,
   "exclude_merge_branches": [],
   "tag_resolver": {
-    "method": "semver",
-    "filter": {}
+    "method": "semver"
   },
-  "base_branches": []
+  "base_branches": [],
+  "custom_placeholders": []
 }
