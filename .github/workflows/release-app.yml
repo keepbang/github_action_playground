@@ -49,17 +49,24 @@ jobs:
           # git push <remote> <remote>/<old_name>:refs/heads/<new_name> :<old_name>
           git push origin origin/${{ steps.branch_variables.outputs.OLD_BRANCH }}:refs/heads/${{ steps.branch_variables.outputs.NEW_BRANCH }} :${{ steps.branch_variables.outputs.OLD_BRANCH }}
 
+  create-next-version:
+    name: Create next version
+    needs: [application-deploy]
+    uses: ./.github/workflows/create-next-semver.yml
+
   create-next-version-branches:
-    needs: [rename-released-branch]
+    needs: [create-next-version, rename-released-branch]
     uses: ./.github/workflows/create-next-version-branches.yml
     with:
+      next_major_version: ${{ needs.create-next-version.outputs.next_major_version }}
+      next_minor_version: ${{ needs.create-next-version.outputs.next_minor_version }}
       part: ${{ needs.rename-released-branch.outputs.part }}
 
   sync_major_train:
     if: ${{ needs.create-next-version-branches.outputs.major_created }}
     runs-on: ubuntu-20.04
     name: Sync latest commits from upstream repo
-    needs: [create-next-version-branches]
+    needs: [create-next-version, create-next-version-branches]
     steps:
       # REQUIRED step
       # Step 1: run a standard checkout action, provided by github
@@ -101,7 +108,7 @@ jobs:
     if: ${{ needs.create-next-version-branches.outputs.major_created }}
     runs-on: ubuntu-20.04
     name: Sync latest commits from upstream repo
-    needs: [create-next-version-branches]
+    needs: [create-next-version, create-next-version-branches]
     steps:
       # REQUIRED step
       # Step 1: run a standard checkout action, provided by github
