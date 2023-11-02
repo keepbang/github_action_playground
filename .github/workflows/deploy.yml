@@ -50,10 +50,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew ${{ env.MODULE_NAME_2 }}:build
 
-      # test
-      - run: |
-          echo {{ needs.tagging.outputs.new_version }}
-
       - name: Nexus Repo Publish
         run: ./gradlew ${{ env.MODULE_NAME_3 }}:publish -DVERSION=${{ needs.tagging.outputs.new_version }}
 
