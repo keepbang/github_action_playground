@@ -55,14 +55,14 @@ jobs:
           echo ${{ steps.create_branch.outputs.created }}  
 
   sync-major-branch:
-    needs: [create_next_major_branch]
+    needs: [create-next-version, create_next_major_branch]
     uses: ./.github/workflows/sync-release-trains.yml
     with:
       target_part: major
       next_version: ${{ needs.create-next-version.outputs.next_major_version }}
 
   sync-minor-branch:
-    needs: [create_next_minor_branch]
+    needs: [create-next-version, create_next_minor_branch]
     uses: ./.github/workflows/sync-release-trains.yml
     with:
       target_part: minor
