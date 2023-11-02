@@ -25,7 +25,7 @@
       "labels": ["release/patch"]
     },
     {
-      "title": "## 릴리즈 🧪",
+      "title": "## 기타  🧪",
       "labels": []
     }
   ],
@@ -37,7 +37,7 @@
     "on_property": "mergedAt"
   },
   "template": "#{{CHANGELOG}}",
-  "pr_template": "- #{{TITLE}}\n   - PR: ##{{URL}}",
+  "pr_template": "- #{{TITLE}}\n   - PR: [#{{NUMBER}}](#{{URL}})",
   "empty_template": "- no changes",
   "label_extractor": [],
   "reference": {},
