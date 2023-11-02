@@ -38,13 +38,34 @@ jobs:
       - name: Check my source
         run: pwd && ls -al
 
-      - name: Build Changelog
-        id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@v4
+      - name: pull request getter
+        uses: 8BitJonny/gh-get-current-pr@2.2.0
+        id: PR
         with:
-          configuration: ".github/changelogs/configuration-library-employee.json"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Authetication token to access GitHub APIs. (Can be omitted by default.)
+          github-token: ${{ github.token }}
+          # Verbose setting SHA when using Pull_Request event trigger to fix #16. (For push even trigger this is not necessary.)
+          sha: ${{ github.event.pull_request.head.sha }}
+          # Only return if PR is still open. (By default it returns PRs in any state.)
+          filterOutClosed: true
+          # Only return if PR is not in draft state. (By default it returns PRs in any state.)
+          filterOutDraft: true
+
+      - name: Commits parsing
+        uses: actions/github-script@v6
+        id: commit_list
+        with:
+          result-encoding: string
+          script: |
+            
+
+#      - name: Build Changelog
+#        id: build_changelog
+#        uses: mikepenz/release-changelog-builder-action@v4
+#        with:
+#          configuration: ".github/changelogs/configuration-library-employee.json"
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 #      - name: Commits parsing
 #        uses: actions/github-script@v6
@@ -111,5 +132,4 @@ jobs:
           database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
           name: ${{ env.LIBRARY_NAME }}-${{ steps.alpha_version.outputs.VERSION }}
           tags: ${{ steps.alpha_version.outputs.VERSION }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME }}
-          body: ${{ steps.build_changelog.outputs.changelog }}
-#          body: ${{ steps.commit_list.outputs.result }}
+          body: ${{ steps.commit_list.outputs.result }}
