@@ -9,7 +9,13 @@ on:
         value: ${{ jobs.application-deploy.outputs.tag }}
       part:
         value: ${{ jobs.application-deploy.outputs.part }}
+    secrets:
+      NOTION_TOKEN:
+        required: true
+      NOTION_RELEASE_NOTE_DATABASE:
+        required: true
 
+# TODO: shell 등을 이용해서 gradle의 모듈 이름을 꺼내오기
 env:
   MODULE_NAME_1: app:grassland
   APPLICATION_NAME_1: mco-playground-grassland
@@ -110,4 +116,3 @@ jobs:
           name: ${{ env.LIBRARY_NAME }}-${{ needs.tagging.outputs.new_version }}
           tags: ${{ needs.tagging.outputs.new_version }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME_3 }}
           body: ${{ steps.build_changelog.outputs.changelog }}
-

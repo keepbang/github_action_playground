@@ -15,7 +15,7 @@ env:
 
 jobs:
   sync_repo:
-    name: Sync latest commits from upstream repo
+    name: Sync from upstream repo
     runs-on: ubuntu-20.04
     steps:
       # REQUIRED step
