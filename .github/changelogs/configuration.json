@@ -50,6 +50,6 @@
   "tag_resolver": {
     "method": "semver"
   },
-  "base_branches": [],
+  "base_branches": ["main"],
   "custom_placeholders": []
 }
