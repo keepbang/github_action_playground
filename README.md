@@ -101,11 +101,19 @@ feature 브랜치에서 작업하는 중간에 머지 할 수 있습니다.
 
 `feature`에 브랜치에서 작업 진행 후 작업 내용에 따라 `major` 또는 `minor` 브랜치에 `pull request`를 작성합니다.
 
+`feature`를 처음 생성하여 push 할 경우 아래 이미지처럼 `Compare & pull request` 버튼이 생깁니다.
+
+![feature_push.png](images/feature_push.png)
+
+만약 생기지 않았다면 `Pull requests` 탭으로 들어가 작성합니다.
+
 `pull request`를 작성 할 때 작업에 해당되는 [Label](Labels.md)을 추가합니다.
+
+![pull_request.png](images/pull_request.png)
 
 `repository` 담당자는 해당 `pull request`를 확인하고 merge 합니다.
 
-> [Part 1](#-part-1-feature-branch) 에서 작업한 feature 브랜치로 minor에 `pull request`를 작성해 주세요.
+> [Part 1](#-part-1-feature-branch) 에서 작업한 feature 브랜치로 minor에 `pull request`를 작성 후 open해 주세요.
 
 
 <br/>
