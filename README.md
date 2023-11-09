@@ -35,7 +35,7 @@
 ![multi_module](./images/multi_module.png)
 
 - 더 자세한 내용은 [Branching & Publishing](https://www.notion.so/mcorporation-dev/Branching-Publishing-350bb7baba4645f3bd4d69abb92cceee?pvs=4)에서 확인 할 수 있으며, 각 단계를 차례대로 살펴보겠습니다.
-- `mcorporation-dev` 에서 사용하는 `issues labels` 은 
+- `mcorporation-dev` 에서 사용하는 `issues labels` 은 [Labels](Labels.md) 에서 확인 할 수 있습니다.
 
 ---
 
@@ -101,11 +101,11 @@ feature 브랜치에서 작업하는 중간에 머지 할 수 있습니다.
 
 `feature`에 브랜치에서 작업 진행 후 작업 내용에 따라 `major` 또는 `minor` 브랜치에 `pull request`를 작성합니다.
 
-`pull request`를 작성 할 때 작업에 해당되는 Label을 추가합니다.
+`pull request`를 작성 할 때 작업에 해당되는 [Label](Labels.md)을 추가합니다.
 
-`repository` 담당자는 해당 `pull request`를 merge
+`repository` 담당자는 해당 `pull request`를 확인하고 merge 합니다.
 
-> [Part 1](#-part-1-feature-branch) 에서 작업한 feature 브랜치를 minor에 머지해 주세요.
+> [Part 1](#-part-1-feature-branch) 에서 작업한 feature 브랜치로 minor에 `pull request`를 작성해 주세요.
 
 
 <br/>
