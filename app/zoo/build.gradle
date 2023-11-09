@@ -3,6 +3,7 @@ apply from: "${project.getRootDir()}/gradle/ext/spring.gradle"
 
 dependencies {
     implementation project(":rep:shared")
+    implementation project(":aid:employee")
 
     implementation 'com.mco.playground:employee-object:+'
 }
