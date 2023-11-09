@@ -9,11 +9,6 @@ on:
         value: ${{ jobs.application-deploy.outputs.tag }}
       part:
         value: ${{ jobs.application-deploy.outputs.part }}
-    secrets:
-      NOTION_TOKEN:
-        required: true
-      NOTION_RELEASE_NOTE_DATABASE:
-        required: true
 
 # TODO: shell 등을 이용해서 gradle의 모듈 이름을 꺼내오기
 env:

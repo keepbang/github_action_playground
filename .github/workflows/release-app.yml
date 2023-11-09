@@ -17,9 +17,7 @@ env:
 jobs:
   application-deploy:
     uses: ./.github/workflows/deploy.yml
-    secrets:
-      NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-      NOTION_RELEASE_NOTE_DATABASE: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
+    secrets: inherit
 
   rename-released-branch:
     name: Rename released branch
