@@ -18,4 +18,5 @@ jobs:
     with:
       MODULE_NAME: aid:employee
       LIBRARY_NAME: employee-object
+      DEFAULT_BRANCH: trial-aid-employee
     secrets: inherit
