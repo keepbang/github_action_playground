@@ -62,7 +62,7 @@ jobs:
         run: ./gradlew ${{ env.MODULE_NAME_2 }}:build
 
       - name: Nexus Repo Publish
-        run: ./gradlew ${{ env.MODULE_NAME_3 }}:publish -DVERSION=${{ needs.tagging.outputs.new_version }}
+        run: ./gradlew ${{ env.MODULE_NAME_3 }}:publish -DVERSION=${{ needs.tagging.outputs.new_version }} -DARTIFACT_ID=${{ env.LIBRARY_NAME }}
 
       - name: Build Changelog
         id: build_changelog
