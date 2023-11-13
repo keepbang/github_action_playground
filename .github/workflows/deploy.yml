@@ -9,11 +9,6 @@ on:
         value: ${{ jobs.application-deploy.outputs.tag }}
       part:
         value: ${{ jobs.application-deploy.outputs.part }}
-    secrets:
-      NOTION_TOKEN:
-        required: true
-      NOTION_RELEASE_NOTE_DATABASE:
-        required: true
 
 # TODO: shell 등을 이용해서 gradle의 모듈 이름을 꺼내오기
 env:
@@ -87,32 +82,23 @@ jobs:
           body: |
             ${{steps.build_changelog.outputs.changelog}}
 
+      - name: Module list parsing
+        id: module_parsing
+        run: |
+          ./gradlew projects -p 'aid' | grep -o "Project ':aid:[^ ']*" | awk '{print substr($0, 11)}' >> module_list.txt
+          ./gradlew projects -p 'app' | grep -o "Project ':app:[^ ']*" | awk '{print substr($0, 11)}' >> module_list.txt
+          echo "TAG_LIST="$(echo $(cat ./module_list.txt) | sed 's/ /,/g' | sed 's/aid/${{ github.event.repository.name }}:aid/g' | sed 's/app/${{ github.event.repository.name }}:app/g') >> $GITHUB_OUTPUT
+
+      - name: tag list logging
+        run: |
+          echo "${{ steps.module_parsing.outputs.TAG_LIST }}"
+
       # 어플리케이션 1 노션 데이터베이스에 추가
-      - name: Notion release notes ${{ env.MODULE_NAME_1 }} application
+      - name: Notion release notes ${{ github.event.repository.name }} application
         uses: infinitaslearning/notion-release-notes@v0.6
         with:
           token: ${{ secrets.NOTION_TOKEN }}
           database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
-          name: ${{ env.APPLICATION_NAME_1 }}-${{ needs.tagging.outputs.new_version }}
-          tags: ${{ needs.tagging.outputs.new_version }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME_1 }}
-          body: ${{ steps.build_changelog.outputs.changelog }}
-
-      # 어플리케이션 2 노션 데이터베이스에 추가
-      - name: Notion release notes ${{ env.MODULE_NAME_2 }} application
-        uses: infinitaslearning/notion-release-notes@v0.6
-        with:
-          token: ${{ secrets.NOTION_TOKEN }}
-          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
-          name: ${{ env.APPLICATION_NAME_2 }}-${{ needs.tagging.outputs.new_version }}
-          tags: ${{ needs.tagging.outputs.new_version }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME_2 }}
-          body: ${{ steps.build_changelog.outputs.changelog }}
-
-      # 라이브러리 1 노션 데이터베이스에 추가
-      - name: Notion release notes ${{ env.MODULE_NAME_3 }} library
-        uses: infinitaslearning/notion-release-notes@v0.6
-        with:
-          token: ${{ secrets.NOTION_TOKEN }}
-          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
-          name: ${{ env.LIBRARY_NAME }}-${{ needs.tagging.outputs.new_version }}
-          tags: ${{ needs.tagging.outputs.new_version }}, ${{ github.event.repository.name }}:${{ env.MODULE_NAME_3 }}
+          name: ${{ github.event.repository.name }}-${{ needs.tagging.outputs.new_version }}
+          tags: ${{ needs.tagging.outputs.new_version }},${{ steps.module_parsing.outputs.TAG_LIST }}
           body: ${{ steps.build_changelog.outputs.changelog }}

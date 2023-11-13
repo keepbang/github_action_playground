@@ -7,7 +7,7 @@ version System.getProperties()["VERSION"]
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId = 'employee-object'
+            artifactId = System.getProperties()["ARTIFACT_ID"]
         }
     }
 }
