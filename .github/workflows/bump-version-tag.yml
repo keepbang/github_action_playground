@@ -27,12 +27,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: trstringer/manual-approval@v1
+      - uses: keepbang/issue-approval@v1.0.0
         with:
-          secret: ${{ github.TOKEN }}
+          secret-token: ${{ secrets.GITHUB_TOKEN }}
           # todo: Add all of team members
           approvers: sghwang-mcorpor,keepbang
-          minimum-approvals: 1
 
       - name: Bump version and push tag
         id: tag_version
