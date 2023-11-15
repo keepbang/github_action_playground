@@ -27,7 +27,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: keepbang/issue-approval@v1.0.1
+      - uses: keepbang/issue-approval@v1.0.2
         with:
           secret-token: ${{ secrets.GITHUB_TOKEN }}
           # todo: Add all of team members
