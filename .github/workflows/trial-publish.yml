@@ -80,7 +80,7 @@ jobs:
               const content = ["**" + commit.timestamp.replace('T',' ').replace('+09:00','') + "**",
                                 "**" + commit.committer.username + "**",
                                 commit.message,
-                                commit.url
+                                "[Commit link](" + commit.url + ")"
               ].join("\n");
               commitList.push(content);
             }
