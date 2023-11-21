@@ -1,32 +1,52 @@
 {
   "categories": [
     {
-      "title": "## 이슈 해결 🛠",
-      "labels": ["resolved"]
+      "title": "## 이슈 해결 ✨",
+      "labels": ["✨resolved"]
     },
     {
       "title": "## 버그 수정 🐞",
-      "labels": ["bug"]
+      "labels": ["🐛bug"]
     },
     {
-      "title": "## 기능 추가 및 개선 🎉",
-      "labels": ["enhancement"]
+      "title": "## 기능 추가 및 개선 💫",
+      "labels": ["💫enhancement"]
+    },
+    {
+      "title": "## test ✅",
+      "labels": ["✅test"]
     },
     {
       "title": "## 릴리즈 (Major) 📢",
-      "labels": ["release/major"]
+      "labels": ["🚀release/major"]
     },
     {
       "title": "## 릴리즈 (Minor) 📢",
-      "labels": ["release/minor"]
+      "labels": ["🔥release/minor"]
     },
     {
       "title": "## 릴리즈 (Patch) 📢",
-      "labels": ["release/patch"]
+      "labels": ["🛠️release/patch"]
+    },
+    {
+      "title": "## 릴리즈 (Library) 📢",
+      "labels": ["🛰️release/library"]
+    },
+    {
+      "title": "## 문서 작성 📝",
+      "labels": ["📝docs"]
+    },
+    {
+      "title": "## 질문 사항 ❓",
+      "labels": ["❓question"]
     },
     {
       "title": "## 기타  🧪",
       "labels": []
+    },
+    {
+      "title": "## 알파 버전 라이브러리 💊",
+      "labels": ["💊trial"]
     }
   ],
   "ignore_labels": [

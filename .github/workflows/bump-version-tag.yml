@@ -14,7 +14,7 @@ jobs:
   tagging:
     name: Bump version tag
     if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
-    runs-on: ubuntu-20.04
+    runs-on: [self-hosted, alpha-app-runner, ubuntu-20.04]
 
     outputs:
       new_version: ${{ steps.tag_version.outputs.new_tag }}
@@ -27,16 +27,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: trstringer/manual-approval@v1
+      - uses: keepbang/issue-approval@v1.0.4
         with:
-          secret: ${{ github.TOKEN }}
+          secret-token: ${{ secrets.GITHUB_TOKEN }}
           # todo: Add all of team members
           approvers: sghwang-mcorpor,keepbang
-          minimum-approvals: 1
 
       - name: Bump version and push tag
         id: tag_version
-        uses: anothrNick/github-tag-action@1.67.0
+        uses: keepbang/bump-tag-version@v1.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: false
