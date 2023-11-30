@@ -49,6 +49,11 @@ jobs:
           nexus_host: ${{ secrets.NEXUS_URL }}
           auth_base64: ${{ secrets.NEXUS_AUTH }}
 
+      - name: version output
+        run: |
+          echo "latest_version=${{ steps.nexus_version.outputs.latest_version }}"
+          echo "new_version=${{ steps.nexus_version.outputs.new_version }}"
+
 
 #      - name: Bump tag version
 #        id: tag_version
