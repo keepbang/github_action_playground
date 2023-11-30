@@ -40,7 +40,7 @@ jobs:
 
       - name: Nexus library version update
         id: nexus_version
-        uses: keepbang/nexus-version-update@v0.0.5
+        uses: keepbang/nexus-version-update@v0.0.6
         with:
           repository: maven-releases
           format: maven2
@@ -48,8 +48,6 @@ jobs:
           name: employee-object
           nexus_host: ${{ secrets.NEXUS_URL }}
           auth_base64: ${{ secrets.NEXUS_AUTH }}
-
-
 
 
 #      - name: Bump tag version
