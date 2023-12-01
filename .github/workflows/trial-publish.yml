@@ -40,7 +40,7 @@ jobs:
 
       - name: Nexus library version update
         id: nexus_version
-        uses: keepbang/nexus-version-update@v0.0.15
+        uses: keepbang/nexus-version-update@v0.0.16
         with:
           repository: maven-releases
           format: maven2
