@@ -38,21 +38,21 @@ jobs:
           ./gradle-init_obf.sh
         shell: bash
 
-      - name: Nexus library version update
-        id: nexus_version
-        uses: keepbang/nexus-version-update@v0.0.21
+      - name: Nexus library version checker
+        id: checker
+        uses: keepbang/nexus-version-checker@v0.0.1
         env:
           REPOSITORY: maven-releases
           FORMAT: maven2
           GROUP: com.mco.playground
           NAME: employee-object
+          VERSION: 1.20.2.0
           NEXUS_HOST: ${{ secrets.NEXUS_URL }}
           AUTH_BASE64: ${{ secrets.NEXUS_AUTH }}
 
       - name: version output
         run: |
-          echo "latest_version=${{ steps.nexus_version.outputs.latest_version }}"
-          echo "new_version=${{ steps.nexus_version.outputs.new_version }}"
+          echo "is_component=${{ steps.checker.outputs.is_component }}"
 
 
 #      - name: Bump tag version
