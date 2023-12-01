@@ -40,14 +40,14 @@ jobs:
 
       - name: Nexus library version update
         id: nexus_version
-        uses: keepbang/nexus-version-update@v0.0.19
+        uses: keepbang/nexus-version-update@v0.0.20
         with:
-          repository: maven-releases
-          format: maven2
-          group: com.mco.playground
-          name: employee-object
-          nexus_host: http://pkg.mtar.co.kr
-          auth_base64: ${{ secrets.NEXUS_AUTH }}
+          REPOSITORY: maven-releases
+          FORMAT: maven2
+          GROUP: com.mco.playground
+          NAME: employee-object
+          NEXUS_HOST: ${{ secrets.NEXUS_URL }}
+          AUTH_BASE64: ${{ secrets.NEXUS_AUTH }}
 
       - name: version output
         run: |
