@@ -41,7 +41,7 @@ jobs:
       - name: Nexus library version update
         id: nexus_version
         uses: keepbang/nexus-version-update@v0.0.21
-        with:
+        env:
           REPOSITORY: maven-releases
           FORMAT: maven2
           GROUP: com.mco.playground
