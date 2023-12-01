@@ -40,13 +40,13 @@ jobs:
 
       - name: Nexus library version update
         id: nexus_version
-        uses: keepbang/nexus-version-update@v0.0.16
+        uses: keepbang/nexus-version-update@v0.0.17
         with:
           repository: maven-releases
           format: maven2
           group: com.mco.playground
           name: employee-object
-          nexus_host: ${{ secrets.NEXUS_URL }}
+          nexus_host: http://pkg.mtar.co.kr
           auth_base64: ${{ secrets.NEXUS_AUTH }}
 
       - name: version output
