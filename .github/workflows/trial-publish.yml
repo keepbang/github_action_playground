@@ -51,7 +51,7 @@ jobs:
 
       - name: Nexus library version checker
         id: checker
-        uses: keepbang/nexus-version-checker@v0.0.1
+        uses: keepbang/nexus-version-checker@v1.0.0
         env:
           REPOSITORY: maven-releases
           FORMAT: maven2
@@ -63,7 +63,10 @@ jobs:
 
       - name: Output new tag
         id: output_new_tag
-        run: echo "new_tag=${{ steps.tag_version.outputs.new_tag }}" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "new_tag=${{ steps.tag_version.outputs.new_tag }}" >> "$GITHUB_OUTPUT"
+          echo "is component : ${{ steps.checker.outputs.is_component }}"
+        
 
       # suffix 제거 스크립트
       - name: library version extraction
