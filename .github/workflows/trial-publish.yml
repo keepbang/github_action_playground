@@ -110,7 +110,7 @@ jobs:
         uses: infinitaslearning/notion-release-notes@v0.6
         with:
           token: ${{ secrets.NOTION_TOKEN }}
-          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASEA }}
+          database: ${{ secrets.NOTION_RELEASE_NOTE_DATABASE }}
           name: ${{ inputs.LIBRARY_NAME }}-${{ steps.alpha_version.outputs.VERSION }}
           tags: ${{ steps.alpha_version.outputs.VERSION }}, ${{ github.event.repository.name }}:${{ inputs.MODULE_NAME }}
           body: ${{ steps.commit_list.outputs.result }}
