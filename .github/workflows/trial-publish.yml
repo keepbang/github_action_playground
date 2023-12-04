@@ -75,7 +75,7 @@ jobs:
           echo "VERSION="$(echo "${{ steps.tag_version.outputs.new_tag }}" | sed 's/-${{ inputs.LIBRARY_NAME }}//') >> $GITHUB_OUTPUT
 
       - name: Nexus Repo Publish
-        if: ${{ steps.checker.outputs.is_component }} == 'false'
+        if: ${{ steps.checker.outputs.is_component == 'false' }}
         run: ./gradlew ${{ inputs.MODULE_NAME }}:publish -DVERSION=${{ steps.alpha_version.outputs.VERSION }} -DARTIFACT_ID=${{ inputs.LIBRARY_NAME }}
 
       - name: Commits parsing
