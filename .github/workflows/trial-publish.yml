@@ -61,6 +61,7 @@ jobs:
           NEXUS_HOST: ${{ secrets.NEXUS_URL }}
           AUTH_BASE64: ${{ secrets.NEXUS_AUTH }}
 
+
       - name: Output new tag
         id: output_new_tag
         run: |
