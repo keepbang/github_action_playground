@@ -51,7 +51,7 @@ jobs:
 
       - name: Nexus library version checker
         id: checker
-        uses: keepbang/nexus-version-checker@v1.0.0
+        uses: keepbang/nexus-version-checker@v1.0.2
         env:
           REPOSITORY: maven-releases
           FORMAT: maven2
